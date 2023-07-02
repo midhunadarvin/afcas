@@ -1,0 +1,15 @@
+version: "3.8"
+services:
+  db:
+    image: postgres:14.4
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-123456}
+      PGDATA: /var/lib/postgresql/afcas/data/pgdata
+    volumes:
+      - source: pg_data
+        target: /var/lib/postgresql/afcas/data
+        type: volume
+volumes:
+  pg_data:
