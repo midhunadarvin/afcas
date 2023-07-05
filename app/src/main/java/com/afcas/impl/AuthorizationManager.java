@@ -1,12 +1,6 @@
 package com.afcas.impl;
 
-import com.afcas.objects.Principal;
-import com.afcas.objects.IAuthorizationManager;
-import com.afcas.objects.ResourceHandle;
-import com.afcas.objects.ResourceAccessPredicateType;
-import com.afcas.objects.Operation;
-import com.afcas.objects.PrincipalType;
-import com.afcas.objects.ResourceAccessPredicate;
+import com.afcas.objects.*;
 import com.afcas.utils.DatabaseHelper;
 
 import java.util.List;
@@ -14,21 +8,16 @@ import java.util.List;
 public class AuthorizationManager implements IAuthorizationManager {
 
     @Override
-    public Object addOrUpdate(Principal pr, String source) {
-        try {
-            Object[] parameterValues = {
-                    pr.getName(),
-                    pr.getPrincipalType().ordinal(),
-                    pr.getDisplayName(),
-                    pr.getEmail(),
-                    pr.getDescription(),
-                    pr.getDataSource()
-            };
-            return DatabaseHelper.executeStoredProcedure("call \"AddOrUpdatePrincipal\"(?,?,?,?,?,?)", parameterValues);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
+    public Object addOrUpdate(Principal pr, String source) throws Exception {
+        Object[] parameterValues = {
+                pr.getName(),
+                pr.getPrincipalType().ordinal(),
+                pr.getDisplayName(),
+                pr.getEmail(),
+                pr.getDescription(),
+                pr.getDataSource()
+        };
+        return DatabaseHelper.executeStoredProcedure("call \"AddOrUpdatePrincipal\"(?,?,?,?,?,?)", parameterValues);
     }
 
     @Override
@@ -37,19 +26,13 @@ public class AuthorizationManager implements IAuthorizationManager {
     }
 
     @Override
-    public Object addOrUpdate(Operation op) {
-        try {
-            Object[] parameterValues = {
-                    op.getId(),
-                    op.getName(),
-                    op.getDescription()
-            };
-            return DatabaseHelper.executeStoredProcedure("call \"AddOrUpdateOperation\"(?,?,?)", parameterValues);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-
+    public Object addOrUpdate(Operation op) throws Exception {
+        Object[] parameterValues = {
+                op.getId(),
+                op.getName(),
+                op.getDescription()
+        };
+        return DatabaseHelper.executeStoredProcedure("call \"AddOrUpdateOperation\"(?,?,?)", parameterValues);
     }
 
     @Override
@@ -57,13 +40,23 @@ public class AuthorizationManager implements IAuthorizationManager {
 
     }
 
+
     @Override
-    public void addAccessPredicate(String principalId, String operationId, ResourceHandle resource, ResourceAccessPredicateType type) {
+    public Object addOrUpdate(Resource resource) throws Exception {
+        Object[] parameterValues = {
+                resource.getId(),
+                resource.getName()
+        };
+        return DatabaseHelper.executeStoredProcedure("call \"AddOrUpdateResource\"(?,?)", parameterValues);
+    }
+
+    @Override
+    public void addAccessPredicate(String principalId, String operationId, Resource resource, ResourceAccessPredicateType type) {
 
     }
 
     @Override
-    public void removeAccessPredicate(String principalId, String operationId, ResourceHandle resource, ResourceAccessPredicateType type) {
+    public void removeAccessPredicate(String principalId, String operationId, Resource resource, ResourceAccessPredicateType type) {
 
     }
 
@@ -88,12 +81,12 @@ public class AuthorizationManager implements IAuthorizationManager {
     }
 
     @Override
-    public void addSubResource(ResourceHandle resource, ResourceHandle subResource) {
+    public void addSubResource(Resource resource, Resource subResource) {
 
     }
 
     @Override
-    public void removeSubResource(ResourceHandle resource, ResourceHandle subResource) {
+    public void removeSubResource(Resource resource, Resource subResource) {
 
     }
 
@@ -143,7 +136,7 @@ public class AuthorizationManager implements IAuthorizationManager {
     }
 
     @Override
-    public boolean isSubResource(ResourceHandle resource, ResourceHandle subResource) {
+    public boolean isSubResource(Resource resource, Resource subResource) {
         return false;
     }
 
@@ -153,12 +146,12 @@ public class AuthorizationManager implements IAuthorizationManager {
     }
 
     @Override
-    public List<Operation> getAuthorizedOperations(String principalId, ResourceHandle resource) {
+    public List<Operation> getAuthorizedOperations(String principalId, Resource resource) {
         return null;
     }
 
     @Override
-    public List<ResourceHandle> getAuthorizedResources(String principalId, String operationId) {
+    public List<Resource> getAuthorizedResources(String principalId, String operationId) {
         return null;
     }
 }

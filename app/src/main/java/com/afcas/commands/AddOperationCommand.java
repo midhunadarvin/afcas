@@ -23,17 +23,22 @@ public class AddOperationCommand implements Runnable {
 
     @Override
     public void run() {
-        if (id == null || id.isEmpty()) {
-            System.out.println("Operation id must be provided!");
+        try {
+            if (id == null || id.isEmpty()) {
+                System.out.println("Operation id must be provided!");
+            }
+            IAuthorizationManager authorizationManager = AuthorizationManagerFactory.getInstance();
+            Operation op = Operation.builder()
+                    .id(id)
+                    .name(name)
+                    .description(description)
+                    .build();
+            authorizationManager.addOrUpdate(op);
+            System.out.println("Added Operation \"" + id + "\" successfully!");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
-        IAuthorizationManager authorizationManager = AuthorizationManagerFactory.getInstance();
 
-        Operation op = Operation.builder()
-                .id(id)
-                .name(name)
-                .description(description)
-                .build();
-        authorizationManager.addOrUpdate(op);
     }
 }
 

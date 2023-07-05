@@ -57,7 +57,7 @@ application {
 
 // Output to build/libs/shadow.jar
 shadowJar {
-    archiveBaseName.set('shadow')
+    archiveBaseName.set('afcas')
     archiveClassifier.set('')
     archiveVersion.set('')
 }

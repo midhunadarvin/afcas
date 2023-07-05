@@ -16,7 +16,7 @@ public class AddPrincipalCommand implements Runnable {
     @Parameters(index = "0", description = "The principal name to add / update", arity = "1")
     private String name;
 
-    @Parameters(index = "1", description = "The principal type", arity = "0..1")
+    @Parameters(index = "1", description = "The principal type", arity = "1")
     private String principalType = "";
 
     @Parameters(index = "2", description = "The display name", arity = "0..1")
@@ -36,16 +36,21 @@ public class AddPrincipalCommand implements Runnable {
         if (name == null || name.isEmpty()) {
             System.out.println("Principal name must be provided!");
         }
-        IAuthorizationManager authorizationManager = AuthorizationManagerFactory.getInstance();
 
-        Principal pr = Principal.builder()
-                .name(name)
-                .email(email)
-                .displayName(displayName)
-                .principalType(PrincipalType.valueOf(principalType))
-                .description(description)
-                .dataSource(source)
-                .build();
-        authorizationManager.addOrUpdate(pr, source);
+        try {
+            IAuthorizationManager authorizationManager = AuthorizationManagerFactory.getInstance();
+            Principal pr = Principal.builder()
+                    .name(name)
+                    .email(email)
+                    .displayName(displayName)
+                    .principalType(PrincipalType.valueOf(principalType))
+                    .description(description)
+                    .dataSource(source)
+                    .build();
+            authorizationManager.addOrUpdate(pr, source);
+            System.out.println("Added Principal \"" + name + "\" successfully!");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }

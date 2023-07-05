@@ -1,15 +1,11 @@
 package com.afcas.impl;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
+import com.afcas.objects.Resource;
 import com.afcas.objects.ResourceAccessPredicate;
-import com.afcas.objects.ResourceAccessPredicateType;
-import com.afcas.objects.ResourceHandle;
 import com.afcas.objects.Operation;
 import com.afcas.objects.IAuthorizationProvider;
-import com.afcas.utils.DatabaseHelper;
 
 public class AuthorizationProvider implements IAuthorizationProvider {
     private static final String _CacheKeyPrefix = "AuthorizationProvider.";
@@ -51,7 +47,7 @@ public class AuthorizationProvider implements IAuthorizationProvider {
     }
 
     @Override
-    public boolean isSubResource(ResourceHandle resource, ResourceHandle subResource) {
+    public boolean isSubResource(Resource resource, Resource subResource) {
         return false;
     }
 
@@ -61,12 +57,12 @@ public class AuthorizationProvider implements IAuthorizationProvider {
     }
 
     @Override
-    public List<Operation> getAuthorizedOperations(String principalId, ResourceHandle resource) {
+    public List<Operation> getAuthorizedOperations(String principalId, Resource resource) {
         return null;
     }
 
     @Override
-    public List<ResourceHandle> getAuthorizedResources(String principalId, String operationId) {
+    public List<Resource> getAuthorizedResources(String principalId, String operationId) {
         return null;
     }
 }

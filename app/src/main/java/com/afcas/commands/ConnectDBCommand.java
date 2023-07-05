@@ -1,18 +1,20 @@
 package com.afcas.commands;
 
+import com.afcas.AfcasApp.CliCommands;
 import com.afcas.InteractiveParameterConsumer;
 import com.afcas.utils.DatabaseHelper;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Command;
-import picocli.CommandLine.Parameters;
-
-import java.util.Arrays;
+import picocli.CommandLine.ParentCommand;
 
 @Command(
         name = "connect-db",
         description = "Connects to a database"
 )
 public class ConnectDBCommand implements Runnable {
+
+    @ParentCommand
+    CliCommands parent;
 
     @Option(names = {"-h", "--host"}, paramLabel = "HOSTNAME", description = "database host name", required = true)
     String hostname;
@@ -31,7 +33,7 @@ public class ConnectDBCommand implements Runnable {
         try {
             if (password == null && System.console() != null) {
                 // alternatively, use Console::readPassword
-                password = new String(System.console().readPassword("Enter value for --password: "));
+                password = parent.reader.readLine("Enter value for --password: ", '*');
             }
             DatabaseHelper.init(hostname, port, username, password);
         } catch (Exception e) {

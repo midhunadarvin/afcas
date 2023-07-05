@@ -28,6 +28,10 @@ public class DatabaseHelper {
         return connection;
     }
 
+    public static boolean isConnected() throws SQLException {
+        return connection != null && !connection.isClosed();
+    }
+
     public static void executeSQLStatement(String sqlStatement) {
         ResultSet resultSet = null;
         try {

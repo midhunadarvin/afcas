@@ -3,7 +3,7 @@ CREATE OR REPLACE PROCEDURE "AddOrUpdateOperation"(
   Name varchar(250),
   Description varchar(500)
 )
-RETURNS VOID AS $$
+AS $$
 BEGIN
     UPDATE "Operation"
     SET "Name" = COALESCE(Name, Id),

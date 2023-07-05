@@ -3,10 +3,10 @@ package com.afcas.objects;
 public class ResourceAccessPredicate {
     private final String principalId;
     private final String operationId;
-    private final ResourceHandle resourceId;
+    private final Resource resourceId;
     private final ResourceAccessPredicateType accessPredicateType;
 
-    public ResourceAccessPredicate(String principalId, String operationId, ResourceHandle resourceId, ResourceAccessPredicateType accessPredicateType) {
+    public ResourceAccessPredicate(String principalId, String operationId, Resource resourceId, ResourceAccessPredicateType accessPredicateType) {
         this.principalId = principalId;
         this.operationId = operationId;
         this.resourceId = resourceId;
@@ -21,7 +21,7 @@ public class ResourceAccessPredicate {
         return operationId;
     }
 
-    public ResourceHandle getResourceId() {
+    public Resource getResourceId() {
         return resourceId;
     }
 

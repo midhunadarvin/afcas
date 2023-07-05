@@ -1,11 +1,6 @@
 package com.afcas.objects;
 
-import java.sql.SQLException;
 import java.util.List;
-
-import com.afcas.objects.ResourceHandle;
-import com.afcas.objects.ResourceAccessPredicate;
-import com.afcas.objects.Operation;
 
 /**
  * The main interface to be used by the clients that need to make authorization decisions.
@@ -18,12 +13,12 @@ public interface IAuthorizationProvider {
     // these methods also have uses for authorization purposes
     boolean isMemberOf(String groupId, String memberId);
     boolean isSubOperation(String opId, String subOpId);
-    boolean isSubResource(ResourceHandle resource, ResourceHandle subResource);
+    boolean isSubResource(Resource resource, Resource subResource);
 
     // These two methods are for offline support
     List<ResourceAccessPredicate> getAuthorizationDigest(String principalId);
-    List<Operation> getAuthorizedOperations(String principalId, ResourceHandle resource);
+    List<Operation> getAuthorizedOperations(String principalId, Resource resource);
 
     // This can be used to allow the user to browse authorized resources
-    List<ResourceHandle> getAuthorizedResources(String principalId, String operationId);
+    List<Resource> getAuthorizedResources(String principalId, String operationId);
 }
