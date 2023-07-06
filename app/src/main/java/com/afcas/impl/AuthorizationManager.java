@@ -1,6 +1,12 @@
 package com.afcas.impl;
 
-import com.afcas.objects.*;
+import com.afcas.objects.IAuthorizationManager;
+import com.afcas.objects.Operation;
+import com.afcas.objects.Principal;
+import com.afcas.objects.PrincipalType;
+import com.afcas.objects.Resource;
+import com.afcas.objects.ResourceAccessPredicate;
+import com.afcas.objects.ResourceAccessPredicateType;
 import com.afcas.utils.DatabaseHelper;
 
 import java.util.List;
@@ -142,36 +148,6 @@ public class AuthorizationManager implements IAuthorizationManager {
 
     @Override
     public List<Operation> getFlatSubOperationsList(Operation op) {
-        return null;
-    }
-
-    @Override
-    public boolean isMemberOf(String groupId, String memberId) {
-        return false;
-    }
-
-    @Override
-    public boolean isSubOperation(String opId, String subOpId) {
-        return false;
-    }
-
-    @Override
-    public boolean isSubResource(Resource resource, Resource subResource) {
-        return false;
-    }
-
-    @Override
-    public List<ResourceAccessPredicate> getAuthorizationDigest(String principalId) {
-        return null;
-    }
-
-    @Override
-    public List<Operation> getAuthorizedOperations(String principalId, Resource resource) {
-        return null;
-    }
-
-    @Override
-    public List<Resource> getAuthorizedResources(String principalId, String operationId) {
         return null;
     }
 }

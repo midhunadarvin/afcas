@@ -2,7 +2,7 @@ package com.afcas.objects;
 
 import java.util.List;
 
-public interface IAuthorizationManager extends IAuthorizationProvider {
+public interface IAuthorizationManager {
 
     // CRUD for principals
     void addOrUpdate(Principal pr, String source) throws Exception;

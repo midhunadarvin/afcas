@@ -32,18 +32,11 @@ public class DatabaseHelper {
         return connection != null && !connection.isClosed();
     }
 
-    public static void executeSQLStatement(String sqlStatement) {
+    public static ResultSet executeSQLStatement(String sqlStatement) {
         ResultSet resultSet = null;
         try {
             if (sqlStatement.trim().toLowerCase().startsWith("select")) {
-                resultSet = statement.executeQuery(sqlStatement);
-                // Process the ResultSet as needed
-                while (resultSet.next()) {
-                    // Access the retrieved data
-                    String column1Value = resultSet.getString("column1");
-                    String column2Value = resultSet.getString("column2");
-                    System.out.println("Column1: " + column1Value + ", Column2: " + column2Value);
-                }
+                return statement.executeQuery(sqlStatement);
             } else {
                 int rowsAffected = statement.executeUpdate(sqlStatement);
                 System.out.println(rowsAffected + " row(s) affected.");
@@ -59,6 +52,7 @@ public class DatabaseHelper {
                 e.printStackTrace();
             }
         }
+        return resultSet;
     }
 
     private static PreparedStatement createCommand(Connection conn, String spName, Object... parameterValues) throws SQLException {
@@ -90,5 +84,29 @@ public class DatabaseHelper {
 
     public static Object executeStoredProcedure(String spName, Object[] parameterValues) throws Exception {
         return StoredProcedureExecutor.executeStoredProcedure(spName, parameterValues);
+    }
+
+    public static Object executeScalar(String spName, Object[] parameterValues) throws SQLException {
+        Object result = null;
+        Connection conn = null;
+        PreparedStatement stmt = null;
+
+        try {
+            conn = getConnection();
+            stmt = conn.prepareStatement(spName);
+            setParameters(stmt, parameterValues);
+
+            boolean hasResultSet = stmt.execute();
+            if (hasResultSet) {
+                ResultSet rs = stmt.getResultSet();
+                if (rs.next()) {
+                    result = rs.getObject(1);
+                }
+            }
+        } finally {
+            stmt.close();
+        }
+
+        return result;
     }
 }

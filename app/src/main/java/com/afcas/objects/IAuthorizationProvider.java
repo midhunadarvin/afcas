@@ -1,5 +1,6 @@
 package com.afcas.objects;
 
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -8,7 +9,7 @@ import java.util.List;
  */
 public interface IAuthorizationProvider {
     // the method to justify the existence of this interface
-//    boolean isAuthorized(String principalId, String operationId, ResourceHandle resource) throws SQLException;
+    boolean isAuthorized(String principalId, String operationId, String resourceId) throws SQLException;
 
     // these methods also have uses for authorization purposes
     boolean isMemberOf(String groupId, String memberId);

@@ -4,6 +4,7 @@
 package com.afcas;
 
 import com.afcas.commands.AddCommand;
+import com.afcas.commands.IsAuthorizedCommand;
 import com.afcas.commands.RemoveCommand;
 import com.afcas.utils.DatabaseHelper;
 import jline.TerminalFactory;
@@ -48,7 +49,8 @@ public class AfcasApp {
                     AddCommand.class,
                     RemoveCommand.class,
                     ConnectDBCommand.class,
-                    ClearScreen.class
+                    ClearScreen.class,
+                    IsAuthorizedCommand.class
             })
     public static class CliCommands implements Runnable {
         public final ConsoleReader reader;
