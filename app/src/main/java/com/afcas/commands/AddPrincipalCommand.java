@@ -36,6 +36,13 @@ public class AddPrincipalCommand implements Runnable {
         if (name == null || name.isEmpty()) {
             System.out.println("Principal name must be provided!");
         }
+        PrincipalType pType;
+        try {
+            pType = PrincipalType.valueOf(principalType);
+        } catch (Exception e) {
+            System.out.println("Must be a valid PrincipalType : User, Group");
+            return;
+        }
 
         try {
             IAuthorizationManager authorizationManager = AuthorizationManagerFactory.getInstance();
@@ -43,7 +50,7 @@ public class AddPrincipalCommand implements Runnable {
                     .name(name)
                     .email(email)
                     .displayName(displayName)
-                    .principalType(PrincipalType.valueOf(principalType))
+                    .principalType(pType)
                     .description(description)
                     .dataSource(source)
                     .build();

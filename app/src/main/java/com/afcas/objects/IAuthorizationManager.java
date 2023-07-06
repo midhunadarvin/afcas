@@ -6,7 +6,7 @@ public interface IAuthorizationManager extends IAuthorizationProvider {
 
     // CRUD for principals
     Object addOrUpdate(Principal pr, String source) throws Exception;
-    void removePrincipal(String id);
+    Object removePrincipal(String id) throws Exception;
 
     // CRUD for operations
     Object addOrUpdate(Operation pr) throws Exception;

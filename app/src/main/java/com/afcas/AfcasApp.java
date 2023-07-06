@@ -4,6 +4,7 @@
 package com.afcas;
 
 import com.afcas.commands.AddCommand;
+import com.afcas.commands.RemoveCommand;
 import com.afcas.utils.DatabaseHelper;
 import jline.TerminalFactory;
 import jline.internal.Configuration;
@@ -45,6 +46,7 @@ public class AfcasApp {
             mixinStandardHelpOptions = true,
             subcommands = {
                     AddCommand.class,
+                    RemoveCommand.class,
                     ConnectDBCommand.class,
                     ClearScreen.class
             })

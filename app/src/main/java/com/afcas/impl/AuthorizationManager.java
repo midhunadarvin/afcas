@@ -21,8 +21,11 @@ public class AuthorizationManager implements IAuthorizationManager {
     }
 
     @Override
-    public void removePrincipal(String id) {
-
+    public Object removePrincipal(String id) throws Exception {
+        Object[] parameterValues = {
+                id
+        };
+        return DatabaseHelper.executeStoredProcedure("call \"RemovePrincipal\"(?)", parameterValues);
     }
 
     @Override
