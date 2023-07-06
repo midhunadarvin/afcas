@@ -5,6 +5,22 @@ A Java / Postgres port of "A fairly capable authorization sub system"
 
 Based on : https://www.codeproject.com/Articles/30380/A-Fairly-Capable-Authorization-Sub-System-with-Row
 
+### Prerequisite
+
+All the scripts in the `sql` folder must be run in the postgres database where we will be persiting the authorization permissions.
+
+Gradle : https://gradle.org/install/
+
+### Build
+
+``gradle shadowJar``
+
+### Run
+
+The build file will be created at `app/build/libs/afcas.jar`
+
+```java -jar afcas.jar```
+
 ### Useage
 
 ##### Connect to Database
@@ -27,6 +43,16 @@ Eg.
 
 <br/>
 
+##### Remove Principal
+```
+remove principal <name>
+```
+
+Eg.
+``remove principal John``
+
+<br/>
+
 ##### Add Operation 
 ```
 add operation <id> <name>
@@ -34,6 +60,16 @@ add operation <id> <name>
 
 Eg.
 ``add operation Edit EditOperation``
+
+<br/>
+
+##### Remove Operation
+```
+remove operation <name>
+```
+
+Eg.
+``remove operation Edit``
 
 <br/>
 
@@ -45,3 +81,14 @@ add resource <id> <name>
 Eg.
 ``add resouce workspace Workspaces``
 
+<br/>
+
+##### Remove Resource
+```
+remove resource <name>
+```
+
+Eg.
+``remove resource Workspace``
+
+<br/>

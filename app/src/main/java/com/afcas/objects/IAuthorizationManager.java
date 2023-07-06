@@ -10,7 +10,11 @@ public interface IAuthorizationManager extends IAuthorizationProvider {
 
     // CRUD for operations
     Object addOrUpdate(Operation pr) throws Exception;
-    void removeOperation(String id);
+    Object removeOperation(String id) throws Exception;
+
+    // CRUD for resources
+    Object addOrUpdate(Resource resource) throws Exception;
+    Object removeResource(String id) throws Exception;
 
     // These two methods are for maintaining the ACL
     void addAccessPredicate(String principalId, String operationId, Resource resource, ResourceAccessPredicateType type);
@@ -21,8 +25,6 @@ public interface IAuthorizationManager extends IAuthorizationProvider {
     void removeGroupMember(Principal group, Principal member);
     void addSubOperation(Operation parent, Operation subOperation);
     void removeSubOperation(Operation parent, Operation subOperation);
-
-    Object addOrUpdate(Resource resource) throws Exception;
     void addSubResource(Resource resource, Resource subResource);
     void removeSubResource(Resource resource, Resource subResource);
 

@@ -84,3 +84,22 @@ BEGIN
     END IF;
 END;
 $$ LANGUAGE plpgsql;
+
+
+-- DROP PROCEDURE IF EXISTS GetPrincipalList;
+CREATE OR REPLACE FUNCTION "GetPrincipalList"(
+    PrincipalType INT DEFAULT NULL
+) RETURNS TABLE (
+    "Name" VARCHAR,
+    "DisplayName" VARCHAR,
+    "PrincipalType" INT,
+    "Email" VARCHAR,
+    "Description" VARCHAR
+) AS $$
+BEGIN
+    RETURN QUERY
+    SELECT P."Name", P."DisplayName", P."PrincipalType"::int, P."Email", P."Description"
+    FROM "Principal" P
+    WHERE P."PrincipalType" IS NULL OR P."PrincipalType" = "GetPrincipalList".PrincipalType;
+END;
+$$ LANGUAGE plpgsql;

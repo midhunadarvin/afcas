@@ -18,3 +18,17 @@ BEGIN
     RETURN;
 END;
 $$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE PROCEDURE "RemoveResource"(
+    Id VARCHAR(10)
+)
+AS $$
+BEGIN
+    DELETE FROM "Resource" WHERE "Id" = "RemoveResource".Id;
+
+    IF FOUND THEN
+        PERFORM "RemoveRelatedEdges"(Id, 'Resource');
+    END IF;
+END;
+$$ LANGUAGE plpgsql;
+

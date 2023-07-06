@@ -39,8 +39,11 @@ public class AuthorizationManager implements IAuthorizationManager {
     }
 
     @Override
-    public void removeOperation(String id) {
-
+    public Object removeOperation(String id) throws Exception {
+        Object[] parameterValues = {
+                id
+        };
+        return DatabaseHelper.executeStoredProcedure("call \"RemoveOperation\"(?)", parameterValues);
     }
 
 
@@ -51,6 +54,14 @@ public class AuthorizationManager implements IAuthorizationManager {
                 resource.getName()
         };
         return DatabaseHelper.executeStoredProcedure("call \"AddOrUpdateResource\"(?,?)", parameterValues);
+    }
+
+    @Override
+    public Object removeResource(String id) throws Exception {
+        Object[] parameterValues = {
+                id
+        };
+        return DatabaseHelper.executeStoredProcedure("call \"RemoveResource\"(?)", parameterValues);
     }
 
     @Override
