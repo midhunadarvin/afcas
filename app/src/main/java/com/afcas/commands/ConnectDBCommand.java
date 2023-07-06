@@ -25,7 +25,7 @@ public class ConnectDBCommand implements Runnable {
     @Option(names = {"-U", "--username"}, paramLabel = "USERNAME", description = "database user name", required = true)
     String username = "";
 
-    @Option(names = {"-W", "--password"}, paramLabel = "PASSWORD", description = "prompt user password", parameterConsumer = InteractiveParameterConsumer.class)
+    @Option(names = {"-W", "--password"}, paramLabel = "PASSWORD", description = "prompt user password")
     String password;
 
     @Override

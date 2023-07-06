@@ -1,31 +1,13 @@
 package com.afcas.objects;
 
+import lombok.Builder;
+import lombok.Data;
+
+@Data
+@Builder
 public class ResourceAccessPredicate {
     private final String principalId;
     private final String operationId;
-    private final Resource resourceId;
+    private final String resourceId;
     private final ResourceAccessPredicateType accessPredicateType;
-
-    public ResourceAccessPredicate(String principalId, String operationId, Resource resourceId, ResourceAccessPredicateType accessPredicateType) {
-        this.principalId = principalId;
-        this.operationId = operationId;
-        this.resourceId = resourceId;
-        this.accessPredicateType = accessPredicateType;
-    }
-
-    public String getPrincipalId() {
-        return principalId;
-    }
-
-    public String getOperationId() {
-        return operationId;
-    }
-
-    public Resource getResourceId() {
-        return resourceId;
-    }
-
-    public ResourceAccessPredicateType getAccessPredicateType() {
-        return accessPredicateType;
-    }
 }

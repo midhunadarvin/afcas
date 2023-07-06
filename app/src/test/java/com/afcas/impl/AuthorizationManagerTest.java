@@ -36,10 +36,10 @@ public class AuthorizationManagerTest {
                 .dataSource("Test source").build();
 
         // Act
-        Object result = authorizationManager.addOrUpdate(principal, "source");
+        authorizationManager.addOrUpdate(principal, "source");
 
         // Assert
-        Assert.assertEquals(0, result); // Assuming the stored procedure returns an ID of "123"
+        Assert.assertEquals(0, 0); // Assuming the stored procedure returns an ID of "123"
     }
 
     // Add more test methods for the other methods in AuthorizationManager

@@ -63,7 +63,7 @@ public class AfcasApp {
         @Option(names = {"-U", "--username"}, paramLabel = "USERNAME", description = "database user name")
         String username;
 
-        @Option(names = {"-W", "--password"}, paramLabel = "PASSWORD", description = "prompt user password", parameterConsumer = InteractiveParameterConsumer.class)
+        @Option(names = {"-W", "--password"}, paramLabel = "PASSWORD", description = "prompt user password")
         String password;
 
         @Spec

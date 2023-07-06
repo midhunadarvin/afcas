@@ -8,7 +8,7 @@ import java.util.List;
 public class AuthorizationManager implements IAuthorizationManager {
 
     @Override
-    public Object addOrUpdate(Principal pr, String source) throws Exception {
+    public void addOrUpdate(Principal pr, String source) throws Exception {
         Object[] parameterValues = {
                 pr.getName(),
                 pr.getPrincipalType().ordinal(),
@@ -17,56 +17,62 @@ public class AuthorizationManager implements IAuthorizationManager {
                 pr.getDescription(),
                 pr.getDataSource()
         };
-        return DatabaseHelper.executeStoredProcedure("call \"AddOrUpdatePrincipal\"(?,?,?,?,?,?)", parameterValues);
+        DatabaseHelper.executeStoredProcedure("call \"AddOrUpdatePrincipal\"(?,?,?,?,?,?)", parameterValues);
     }
 
     @Override
-    public Object removePrincipal(String id) throws Exception {
+    public void removePrincipal(String id) throws Exception {
         Object[] parameterValues = {
                 id
         };
-        return DatabaseHelper.executeStoredProcedure("call \"RemovePrincipal\"(?)", parameterValues);
+        DatabaseHelper.executeStoredProcedure("call \"RemovePrincipal\"(?)", parameterValues);
     }
 
     @Override
-    public Object addOrUpdate(Operation op) throws Exception {
+    public void addOrUpdate(Operation op) throws Exception {
         Object[] parameterValues = {
                 op.getId(),
                 op.getName(),
                 op.getDescription()
         };
-        return DatabaseHelper.executeStoredProcedure("call \"AddOrUpdateOperation\"(?,?,?)", parameterValues);
+        DatabaseHelper.executeStoredProcedure("call \"AddOrUpdateOperation\"(?,?,?)", parameterValues);
     }
 
     @Override
-    public Object removeOperation(String id) throws Exception {
+    public void removeOperation(String id) throws Exception {
         Object[] parameterValues = {
                 id
         };
-        return DatabaseHelper.executeStoredProcedure("call \"RemoveOperation\"(?)", parameterValues);
+        DatabaseHelper.executeStoredProcedure("call \"RemoveOperation\"(?)", parameterValues);
     }
 
 
     @Override
-    public Object addOrUpdate(Resource resource) throws Exception {
+    public void addOrUpdate(Resource resource) throws Exception {
         Object[] parameterValues = {
                 resource.getId(),
                 resource.getName()
         };
-        return DatabaseHelper.executeStoredProcedure("call \"AddOrUpdateResource\"(?,?)", parameterValues);
+        DatabaseHelper.executeStoredProcedure("call \"AddOrUpdateResource\"(?,?)", parameterValues);
     }
 
     @Override
-    public Object removeResource(String id) throws Exception {
+    public void removeResource(String id) throws Exception {
         Object[] parameterValues = {
                 id
         };
-        return DatabaseHelper.executeStoredProcedure("call \"RemoveResource\"(?)", parameterValues);
+        DatabaseHelper.executeStoredProcedure("call \"RemoveResource\"(?)", parameterValues);
     }
 
     @Override
-    public void addAccessPredicate(String principalId, String operationId, Resource resource, ResourceAccessPredicateType type) {
-
+    public void addAccessPredicate(ResourceAccessPredicate resourceAccessPredicate) throws Exception {
+        Object[] parameterValues = {
+                resourceAccessPredicate.getPrincipalId(),
+                resourceAccessPredicate.getOperationId(),
+                resourceAccessPredicate.getResourceId(),
+                resourceAccessPredicate.getAccessPredicateType().ordinal()
+        };
+        DatabaseHelper.executeStoredProcedure("call \"AddAccessPredicate\"(?,?,?,?)", parameterValues);
     }
 
     @Override

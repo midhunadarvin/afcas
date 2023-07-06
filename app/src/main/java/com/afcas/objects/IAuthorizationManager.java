@@ -5,19 +5,19 @@ import java.util.List;
 public interface IAuthorizationManager extends IAuthorizationProvider {
 
     // CRUD for principals
-    Object addOrUpdate(Principal pr, String source) throws Exception;
-    Object removePrincipal(String id) throws Exception;
+    void addOrUpdate(Principal pr, String source) throws Exception;
+    void removePrincipal(String id) throws Exception;
 
     // CRUD for operations
-    Object addOrUpdate(Operation pr) throws Exception;
-    Object removeOperation(String id) throws Exception;
+    void addOrUpdate(Operation pr) throws Exception;
+    void removeOperation(String id) throws Exception;
 
     // CRUD for resources
-    Object addOrUpdate(Resource resource) throws Exception;
-    Object removeResource(String id) throws Exception;
+    void addOrUpdate(Resource resource) throws Exception;
+    void removeResource(String id) throws Exception;
 
     // These two methods are for maintaining the ACL
-    void addAccessPredicate(String principalId, String operationId, Resource resource, ResourceAccessPredicateType type);
+    void addAccessPredicate(ResourceAccessPredicate resourceAccessPredicate) throws Exception;
     void removeAccessPredicate(String principalId, String operationId, Resource resource, ResourceAccessPredicateType type);
 
     // These are to maintain the hierarchy of principal, operation, and resources
