@@ -128,16 +128,6 @@ Eg.
 
 <br/>
 
-##### Check if Authorized
-```
-is-authorized <principle> <operation> <workspace>
-```
-
-Eg.
-``is-authorized John Edit Workspace``
-
-<br/>
-
 ##### Add Group Member
 ```
 add group-member <group-name> <member-name>
