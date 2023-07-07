@@ -1,13 +1,13 @@
 
 ## AFCAS
 
-A Java / Postgres port of "A fairly capable authorization sub system"
+A Java / PostgreSQL port of "A fairly capable authorization sub system"
 
 Based on : https://www.codeproject.com/Articles/30380/A-Fairly-Capable-Authorization-Sub-System-with-Row
 
 ### Prerequisite
 
-All the scripts in the `sql` folder must be run in the postgres database where we will be persiting the authorization permissions.
+All the scripts in the `sql` folder must be run in the postgres database where we will be persisting the authorization permissions.
 
 Gradle : https://gradle.org/install/
 
@@ -92,3 +92,14 @@ Eg.
 ``remove resource Workspace``
 
 <br/>
+
+##### Check if Authorized
+```
+is-authorized <principle> <operation> <workspace>
+```
+
+Eg.
+``is-authorized John Edit Workspace``
+
+<br/>
+
