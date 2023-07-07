@@ -5,7 +5,6 @@ import com.afcas.utils.CachedRowSetPrinter;
 import com.afcas.utils.DatabaseHelper;
 
 import javax.sql.rowset.CachedRowSet;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -172,13 +171,25 @@ public class AuthorizationManager implements IAuthorizationManager {
     }
 
     @Override
-    public List<Principal> getMembersList(Principal pr) {
-        return null;
+    public List<Principal> getMembersList(Principal pr) throws SQLException {
+        Object[] parameterValues = {
+                pr.getId(),
+                0
+        };
+        CachedRowSet result = DatabaseHelper.executeQuery("SELECT * FROM \"GetMembersList\"(?,?)", parameterValues);
+        CachedRowSetPrinter.print(result);
+        return buildMemberList(result);
     }
 
     @Override
-    public List<Principal> getFlatMembersList(Principal pr) {
-        return null;
+    public List<Principal> getFlatMembersList(Principal pr) throws SQLException {
+        Object[] parameterValues = {
+                pr.getId(),
+                1
+        };
+        CachedRowSet result = DatabaseHelper.executeQuery("SELECT * FROM \"GetMembersList\"(?,?)", parameterValues);
+        CachedRowSetPrinter.print(result);
+        return buildMemberList(result);
     }
 
     @Override
@@ -197,7 +208,7 @@ public class AuthorizationManager implements IAuthorizationManager {
     }
 
     private List<Principal> buildPrincipalList(CachedRowSet cachedRowSet) throws SQLException {
-        cachedRowSet.first();
+        cachedRowSet.beforeFirst();
         List<Principal> result = new ArrayList<Principal>();
 
         if (!cachedRowSet.next()) {
@@ -219,5 +230,20 @@ public class AuthorizationManager implements IAuthorizationManager {
                 .principalType(PrincipalType.values()[cachedRowSet.getInt(3)])
                 .email(cachedRowSet.getString(4))
                 .build();
+    }
+
+    private List<Principal> buildMemberList(CachedRowSet cachedRowSet) throws SQLException {
+        cachedRowSet.beforeFirst();
+        List<Principal> result = new ArrayList<Principal>();
+        if (!cachedRowSet.next()) {
+            return result;
+        }
+
+        do {
+            Principal pr = constructPrincipal(cachedRowSet);
+            result.add(pr);
+        } while (cachedRowSet.next());
+
+        return result;
     }
 }

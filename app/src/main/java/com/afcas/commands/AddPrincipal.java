@@ -17,10 +17,10 @@ public class AddPrincipal implements Runnable {
     private String name;
 
     @Parameters(index = "1", description = "The principal type", arity = "1")
-    private String principalType = "";
+    private String principalType;
 
     @Parameters(index = "2", description = "The display name", arity = "0..1")
-    private String displayName = "";
+    private String displayName;
 
     @Parameters(index = "3", description = "The email of the principal", arity = "0..1")
     private String email = "";

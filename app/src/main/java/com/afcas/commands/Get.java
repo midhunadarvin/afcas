@@ -6,7 +6,8 @@ import picocli.CommandLine.Command;
         name = "get",
         description = "gets a entity ( principal / operation / resource )",
         subcommands = {
-                GetPrincipalList.class
+                GetPrincipalList.class,
+                GetMembersList.class
         }
 )
 public class Get implements Runnable {

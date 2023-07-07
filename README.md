@@ -195,3 +195,14 @@ get principal
 
 <br/>
 
+##### List Members
+```
+get members <group-name> [<is-flat>]
+```
+
+Eg.
+``get members Admins true``
+
+<br/>
+
+get members Admins true

@@ -110,3 +110,32 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+CREATE OR REPLACE FUNCTION "GetMembersList"(
+    IN GroupName varchar(256),
+    IN IsFlat int
+)
+RETURNS TABLE (
+    "Name" varchar(256),
+    "DisplayName" varchar(256),
+    "PrincipalType" varchar(256),
+    "Email" varchar(256),
+    "Description" varchar(256)
+)
+AS $$
+BEGIN
+    RETURN QUERY
+    SELECT DISTINCT
+           P."Name",
+           P."DisplayName",
+           P."PrincipalType",
+           P."Email",
+           P."Description"
+      FROM "Principal" P
+      INNER JOIN "Edge" E
+          ON P."Name" = E."StartVertex"
+      WHERE E."EndVertex" = GroupName
+        AND E."Source" = 'Principal'
+        AND (IsFlat = 1 OR E."Hops" = IsFlat);
+END;
+$$ LANGUAGE plpgsql;
+
