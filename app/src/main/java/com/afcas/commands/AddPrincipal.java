@@ -11,7 +11,7 @@ import picocli.CommandLine.Command;
         name = "principal",
         description = "adds a principal"
 )
-public class AddPrincipalCommand implements Runnable {
+public class AddPrincipal implements Runnable {
 
     @Parameters(index = "0", description = "The principal name to add / update", arity = "1")
     private String name;

@@ -6,24 +6,24 @@ import picocli.CommandLine.Parameters;
 import picocli.CommandLine.Command;
 
 @Command(
-        name = "resource",
-        description = "removes a resource"
+        name = "principal",
+        description = "removes a principal"
 )
-public class RemoveResourceCommand implements Runnable {
+public class RemovePrincipal implements Runnable {
 
-    @Parameters(index = "0", description = "The Resource name to remove", arity = "1")
+    @Parameters(index = "0", description = "The principal name to remove", arity = "1")
     private String name;
 
     @Override
     public void run() {
         if (name == null || name.isEmpty()) {
-            System.out.println("Resource name must be provided!");
+            System.out.println("Principal name must be provided!");
         }
 
         try {
             IAuthorizationManager authorizationManager = AuthorizationManagerFactory.getInstance();
-            authorizationManager.removeResource(name);
-            System.out.println("Removed Resource \"" + name + "\" successfully!");
+            authorizationManager.removePrincipal(name);
+            System.out.println("Removed Principal \"" + name + "\" successfully!");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

@@ -3,16 +3,16 @@
  */
 package com.afcas;
 
-import com.afcas.commands.AddCommand;
-import com.afcas.commands.IsAuthorizedCommand;
-import com.afcas.commands.RemoveCommand;
+import com.afcas.commands.Add;
+import com.afcas.commands.IsAuthorized;
+import com.afcas.commands.Remove;
 import com.afcas.utils.DatabaseHelper;
 import jline.TerminalFactory;
 import jline.internal.Configuration;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 
-import com.afcas.commands.ConnectDBCommand;
+import com.afcas.commands.ConnectDB;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -46,11 +46,11 @@ public class AfcasApp {
             footer = {"", "Press Ctrl-C to exit."},
             mixinStandardHelpOptions = true,
             subcommands = {
-                    AddCommand.class,
-                    RemoveCommand.class,
-                    ConnectDBCommand.class,
+                    Add.class,
+                    Remove.class,
+                    ConnectDB.class,
                     ClearScreen.class,
-                    IsAuthorizedCommand.class
+                    IsAuthorized.class
             })
     public static class CliCommands implements Runnable {
         public final ConsoleReader reader;

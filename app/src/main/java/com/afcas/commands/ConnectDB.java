@@ -1,7 +1,6 @@
 package com.afcas.commands;
 
 import com.afcas.AfcasApp.CliCommands;
-import com.afcas.InteractiveParameterConsumer;
 import com.afcas.utils.DatabaseHelper;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Command;
@@ -11,7 +10,7 @@ import picocli.CommandLine.ParentCommand;
         name = "connect-db",
         description = "Connects to a database"
 )
-public class ConnectDBCommand implements Runnable {
+public class ConnectDB implements Runnable {
 
     @ParentCommand
     CliCommands parent;

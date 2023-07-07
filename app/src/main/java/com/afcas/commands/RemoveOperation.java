@@ -9,7 +9,7 @@ import picocli.CommandLine.Command;
         name = "operation",
         description = "removes a operation"
 )
-public class RemoveOperationCommand implements Runnable {
+public class RemoveOperation implements Runnable {
 
     @Parameters(index = "0", description = "The Operation name to remove", arity = "1")
     private String name;

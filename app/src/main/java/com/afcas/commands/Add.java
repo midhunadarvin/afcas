@@ -6,10 +6,14 @@ import picocli.CommandLine.Command;
         name = "add",
         description = "adds a entity ( principal / operation / resource )",
         subcommands = {
-                AddPrincipalCommand.class, AddOperationCommand.class, AddResourceCommand.class, AddAccessPredicateCommand.class
+                AddPrincipal.class,
+                AddOperation.class,
+                AddResource.class,
+                AddAccessPredicate.class,
+                AddGroupMember.class
         }
 )
-public class AddCommand implements Runnable {
+public class Add implements Runnable {
 
     @Override
     public void run() {

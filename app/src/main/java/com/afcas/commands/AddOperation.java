@@ -10,7 +10,7 @@ import picocli.CommandLine.Command;
         name = "operation",
         description = "add / update an operation"
 )
-public class AddOperationCommand implements Runnable {
+public class AddOperation implements Runnable {
 
     @Parameters(index = "0", description = "The operation name to add / update", arity = "1")
     private String id;

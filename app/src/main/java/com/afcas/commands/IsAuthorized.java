@@ -8,7 +8,7 @@ import picocli.CommandLine.Parameters;
         name = "is-authorized",
         description = "Check if the specified entity has operation permissions to the resource"
 )
-public class IsAuthorizedCommand implements Runnable {
+public class IsAuthorized implements Runnable {
 
     private AuthorizationProvider authorizationProvider;
 
@@ -21,7 +21,7 @@ public class IsAuthorizedCommand implements Runnable {
     @Parameters(index = "2", description = "The resource name", arity = "1")
     private String resourceId;
 
-    public IsAuthorizedCommand() {
+    public IsAuthorized() {
         this.authorizationProvider = new AuthorizationProvider(3600);
     }
 

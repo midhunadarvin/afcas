@@ -7,12 +7,13 @@ import com.afcas.objects.ResourceAccessPredicateType;
 import picocli.CommandLine.Parameters;
 import picocli.CommandLine.Command;
 
+
 @Command(
         name = "access-predicate",
         aliases = {"permission"},
-        description = "removes a permission / access predicate"
+        description = "adds a permission / access-predicate"
 )
-public class RemoveAccessPredicateCommand implements Runnable {
+public class AddAccessPredicate implements Runnable {
 
     @Parameters(index = "0", description = "The principal name", arity = "1")
     private String principalName;
@@ -44,8 +45,8 @@ public class RemoveAccessPredicateCommand implements Runnable {
                     .resourceId(resourceName)
                     .accessPredicateType(pType)
                     .build();
-            authorizationManager.removeAccessPredicate(resourceAccessPredicate);
-            System.out.println("Removed permission successfully!");
+            authorizationManager.addAccessPredicate(resourceAccessPredicate);
+            System.out.println("Added permission successfully!");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

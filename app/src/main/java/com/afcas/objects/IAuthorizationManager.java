@@ -21,7 +21,7 @@ public interface IAuthorizationManager {
     void removeAccessPredicate(ResourceAccessPredicate resourceAccessPredicate) throws Exception;
 
     // These are to maintain the hierarchy of principal, operation, and resources
-    void addGroupMember(Principal group, Principal member);
+    void addGroupMember(Principal group, Principal member) throws Exception;
     void removeGroupMember(Principal group, Principal member);
     void addSubOperation(Operation parent, Operation subOperation);
     void removeSubOperation(Operation parent, Operation subOperation);

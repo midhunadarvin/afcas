@@ -1,11 +1,6 @@
 package com.afcas.impl;
 
-import com.afcas.objects.IAuthorizationManager;
-import com.afcas.objects.Operation;
-import com.afcas.objects.Principal;
-import com.afcas.objects.PrincipalType;
-import com.afcas.objects.Resource;
-import com.afcas.objects.ResourceAccessPredicate;
+import com.afcas.objects.*;
 import com.afcas.utils.DatabaseHelper;
 
 import java.util.List;
@@ -92,8 +87,16 @@ public class AuthorizationManager implements IAuthorizationManager {
     }
 
     @Override
-    public void addGroupMember(Principal group, Principal member) {
-
+    public void addGroupMember(Principal group, Principal member) throws Exception {
+        if( group.getPrincipalType() != PrincipalType.Group ) {
+            throw new IllegalArgumentException( "Only groups may have members" );
+        }
+        Object[] parameterValues = {
+                member.getId(),
+                group.getId(),
+                EdgeSource.Principal.toString()
+        };
+        DatabaseHelper.executeStoredProcedure("call \"AddEdgeWithSpaceSavings\"(?,?,?)", parameterValues);
     }
 
     @Override

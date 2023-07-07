@@ -7,13 +7,13 @@ import picocli.CommandLine.Command;
         aliases = {"rm"},
         description = "removes a entity ( principal / operation / resource )",
         subcommands = {
-                RemovePrincipalCommand.class,
-                RemoveOperationCommand.class,
-                RemoveResourceCommand.class,
-                RemoveAccessPredicateCommand.class
+                RemovePrincipal.class,
+                RemoveOperation.class,
+                RemoveResource.class,
+                RemoveAccessPredicate.class
         }
 )
-public class RemoveCommand implements Runnable {
+public class Remove implements Runnable {
 
     @Override
     public void run() {

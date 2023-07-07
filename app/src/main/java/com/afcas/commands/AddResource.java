@@ -2,7 +2,6 @@ package com.afcas.commands;
 
 import com.afcas.factory.AuthorizationManagerFactory;
 import com.afcas.objects.IAuthorizationManager;
-import com.afcas.objects.Operation;
 import com.afcas.objects.Resource;
 import picocli.CommandLine.Parameters;
 import picocli.CommandLine.Command;
@@ -11,7 +10,7 @@ import picocli.CommandLine.Command;
         name = "resource",
         description = "add / update an resource"
 )
-public class AddResourceCommand implements Runnable {
+public class AddResource implements Runnable {
 
     @Parameters(index = "0", description = "The resource name to add / update", arity = "1")
     private String id;
