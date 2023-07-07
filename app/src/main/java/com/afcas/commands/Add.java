@@ -10,7 +10,9 @@ import picocli.CommandLine.Command;
                 AddOperation.class,
                 AddResource.class,
                 AddAccessPredicate.class,
-                AddGroupMember.class
+                AddGroupMember.class,
+                AddSubOperation.class,
+                AddSubResource.class
         }
 )
 public class Add implements Runnable {

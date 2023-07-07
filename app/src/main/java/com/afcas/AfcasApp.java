@@ -4,15 +4,15 @@
 package com.afcas;
 
 import com.afcas.commands.Add;
-import com.afcas.commands.IsAuthorized;
+import com.afcas.commands.Get;
 import com.afcas.commands.Remove;
+import com.afcas.commands.ConnectDB;
+import com.afcas.commands.IsAuthorized;
 import com.afcas.utils.DatabaseHelper;
 import jline.TerminalFactory;
 import jline.internal.Configuration;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
-
-import com.afcas.commands.ConnectDB;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -47,6 +47,7 @@ public class AfcasApp {
             mixinStandardHelpOptions = true,
             subcommands = {
                     Add.class,
+                    Get.class,
                     Remove.class,
                     ConnectDB.class,
                     ClearScreen.class,

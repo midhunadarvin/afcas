@@ -1,10 +1,11 @@
 package com.afcas.utils;
 
+import javax.sql.rowset.CachedRowSet;
+import javax.sql.rowset.RowSetProvider;
 import java.sql.*;
 
 public class DatabaseHelper {
     private static Connection connection;
-    private static Statement statement = null;
     private static String url, username, password, port = "";
 
     public static void init(String url, String port, String username, String password) {
@@ -22,7 +23,6 @@ public class DatabaseHelper {
     public static Connection getConnection() throws SQLException {
         if (connection == null || connection.isClosed()) {
             connection = DriverManager.getConnection(url, username, password);
-            statement = connection.createStatement();
             System.out.println("Database connected successfully!");
         }
         return connection;
@@ -32,42 +32,84 @@ public class DatabaseHelper {
         return connection != null && !connection.isClosed();
     }
 
-    public static ResultSet executeSQLStatement(String sqlStatement) {
-        ResultSet resultSet = null;
-        try {
-            if (sqlStatement.trim().toLowerCase().startsWith("select")) {
-                return statement.executeQuery(sqlStatement);
-            } else {
-                int rowsAffected = statement.executeUpdate(sqlStatement);
-                System.out.println(rowsAffected + " row(s) affected.");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
+    public static void closeStatement(Statement statement) {
+        if (statement != null) {
             try {
-                if (resultSet != null) {
-                    resultSet.close();
-                }
+                statement.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
-        return resultSet;
     }
 
-    private static PreparedStatement createCommand(Connection conn, String spName, Object... parameterValues) throws SQLException {
-        PreparedStatement res = conn.prepareStatement(spName);
-        setParameters(res, parameterValues);
-        return res;
-    }
-
-    private static Object executeCommand(String spName, SqlCommandExecutor executor, Object... parameterValues) throws SQLException {
-        Object res = null;
-        try (Connection conn = DatabaseHelper.getConnection();
-             PreparedStatement cmd = createCommand(conn, spName, parameterValues)) {
-            res = executor.execute(cmd);
+    public static void closeResultSet(ResultSet resultSet) {
+        if (resultSet != null) {
+            try {
+                resultSet.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
-        return res;
+    }
+
+    public static CachedRowSet executeQuery(String sql) throws SQLException {
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try {
+            CachedRowSet cachedRowSet = RowSetProvider.newFactory().createCachedRowSet();
+            preparedStatement = connection.prepareStatement(sql);
+            resultSet = preparedStatement.executeQuery();
+            cachedRowSet.populate(resultSet);
+            return cachedRowSet;
+        } catch (SQLException e) {
+            // Handle exception
+            e.printStackTrace();
+            throw e;
+        } finally {
+            closeResultSet(resultSet);
+            closeStatement(preparedStatement);
+        }
+    }
+
+    public static CachedRowSet executeQuery(String sql, Object[] parameterValues) throws SQLException {
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try {
+            CachedRowSet cachedRowSet = RowSetProvider.newFactory().createCachedRowSet();
+            preparedStatement = connection.prepareStatement(sql);
+            setParameters(preparedStatement, parameterValues);
+            resultSet = preparedStatement.executeQuery();
+            cachedRowSet.populate(resultSet);
+            return cachedRowSet;
+        } catch (SQLException e) {
+            // Handle exception
+            e.printStackTrace();
+            throw e;
+        } finally {
+            closeResultSet(resultSet);
+            closeStatement(preparedStatement);
+        }
+    }
+
+    // Example method to execute an INSERT, UPDATE, or DELETE query
+    public static int executeUpdate(String sql, Object[] parameterValues) throws SQLException {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+
+        try {
+            connection = getConnection();
+            preparedStatement = connection.prepareStatement(sql);
+            setParameters(preparedStatement, parameterValues);
+            return preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            // Handle exception
+            e.printStackTrace();
+            throw e;
+        } finally {
+            closeStatement(preparedStatement);
+        }
     }
 
     private static void setParameters(PreparedStatement stmt, Object... parameterValues) throws SQLException {
@@ -76,10 +118,6 @@ public class DatabaseHelper {
                 stmt.setObject(i + 1, parameterValues[i]);
             }
         }
-    }
-
-    private interface SqlCommandExecutor {
-        Object execute(PreparedStatement stmt) throws SQLException;
     }
 
     public static Object executeStoredProcedure(String spName, Object[] parameterValues) throws Exception {

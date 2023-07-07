@@ -1,8 +1,13 @@
 package com.afcas.impl;
 
 import com.afcas.objects.*;
+import com.afcas.utils.CachedRowSetPrinter;
 import com.afcas.utils.DatabaseHelper;
 
+import javax.sql.rowset.CachedRowSet;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class AuthorizationManager implements IAuthorizationManager {
@@ -88,8 +93,8 @@ public class AuthorizationManager implements IAuthorizationManager {
 
     @Override
     public void addGroupMember(Principal group, Principal member) throws Exception {
-        if( group.getPrincipalType() != PrincipalType.Group ) {
-            throw new IllegalArgumentException( "Only groups may have members" );
+        if (group.getPrincipalType() != PrincipalType.Group) {
+            throw new IllegalArgumentException("Only groups may have members");
         }
         Object[] parameterValues = {
                 member.getId(),
@@ -100,38 +105,70 @@ public class AuthorizationManager implements IAuthorizationManager {
     }
 
     @Override
-    public void removeGroupMember(Principal group, Principal member) {
-
+    public void removeGroupMember(Principal group, Principal member) throws Exception {
+        Object[] parameterValues = {
+                member.getId(),
+                group.getId(),
+                EdgeSource.Principal.toString()
+        };
+        DatabaseHelper.executeStoredProcedure("call \"RemoveEdgeWithSpaceSavings\"(?,?,?)", parameterValues);
     }
 
     @Override
-    public void addSubOperation(Operation parent, Operation subOperation) {
-
+    public void addSubOperation(Operation parent, Operation subOperation) throws Exception {
+        Object[] parameterValues = {
+                subOperation.getId(),
+                parent.getId(),
+                EdgeSource.Operation.toString()
+        };
+        DatabaseHelper.executeStoredProcedure("call \"AddEdgeWithSpaceSavings\"(?,?,?)", parameterValues);
     }
 
     @Override
-    public void removeSubOperation(Operation parent, Operation subOperation) {
-
+    public void removeSubOperation(Operation parent, Operation subOperation) throws Exception {
+        Object[] parameterValues = {
+                subOperation.getId(),
+                parent.getId(),
+                EdgeSource.Operation.toString()
+        };
+        DatabaseHelper.executeStoredProcedure("call \"RemoveEdgeWithSpaceSavings\"(?,?,?)", parameterValues);
     }
 
     @Override
-    public void addSubResource(Resource resource, Resource subResource) {
-
+    public void addSubResource(Resource resource, Resource subResource) throws Exception {
+        Object[] parameterValues = {
+                subResource.getId(),
+                resource.getId(),
+                EdgeSource.Resource.toString()
+        };
+        DatabaseHelper.executeStoredProcedure("call \"AddEdgeWithSpaceSavings\"(?,?,?)", parameterValues);
     }
 
     @Override
-    public void removeSubResource(Resource resource, Resource subResource) {
-
+    public void removeSubResource(Resource resource, Resource subResource) throws Exception {
+        Object[] parameterValues = {
+                subResource.getId(),
+                resource.getId(),
+                EdgeSource.Resource.toString()
+        };
+        DatabaseHelper.executeStoredProcedure("call \"RemoveEdgeWithSpaceSavings\"(?,?,?)", parameterValues);
     }
 
     @Override
-    public List<Principal> getPrincipalList() {
-        return null;
+    public List<Principal> getPrincipalList() throws SQLException {
+        CachedRowSet result = DatabaseHelper.executeQuery("SELECT * FROM \"GetPrincipalList\"()");
+        CachedRowSetPrinter.print(result);
+        return buildPrincipalList(result);
     }
 
     @Override
-    public List<Principal> getPrincipalList(PrincipalType type) {
-        return null;
+    public List<Principal> getPrincipalList(PrincipalType type) throws SQLException {
+        Object[] parameterValues = {
+                type
+        };
+        CachedRowSet result = DatabaseHelper.executeQuery("SELECT * FROM \"GetPrincipalList\"(?)", parameterValues);
+        CachedRowSetPrinter.print(result);
+        return buildPrincipalList(result);
     }
 
     @Override
@@ -157,5 +194,30 @@ public class AuthorizationManager implements IAuthorizationManager {
     @Override
     public List<Operation> getFlatSubOperationsList(Operation op) {
         return null;
+    }
+
+    private List<Principal> buildPrincipalList(CachedRowSet cachedRowSet) throws SQLException {
+        cachedRowSet.first();
+        List<Principal> result = new ArrayList<Principal>();
+
+        if (!cachedRowSet.next()) {
+            return result;
+        }
+
+        do {
+            Principal pr = constructPrincipal(cachedRowSet);
+            result.add(pr);
+        } while (cachedRowSet.next());
+
+        return result;
+    }
+
+    private Principal constructPrincipal(CachedRowSet cachedRowSet) throws SQLException {
+        return Principal.builder()
+                .id(cachedRowSet.getString(1))
+                .name(cachedRowSet.getString(2))
+                .principalType(PrincipalType.values()[cachedRowSet.getInt(3)])
+                .email(cachedRowSet.getString(4))
+                .build();
     }
 }

@@ -10,7 +10,9 @@ import picocli.CommandLine.Command;
                 RemovePrincipal.class,
                 RemoveOperation.class,
                 RemoveResource.class,
-                RemoveAccessPredicate.class
+                RemoveAccessPredicate.class,
+                RemoveSubOperation.class,
+                RemoveSubResource.class
         }
 )
 public class Remove implements Runnable {

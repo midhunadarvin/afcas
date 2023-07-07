@@ -1,5 +1,6 @@
 package com.afcas.objects;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public interface IAuthorizationManager {
@@ -22,15 +23,15 @@ public interface IAuthorizationManager {
 
     // These are to maintain the hierarchy of principal, operation, and resources
     void addGroupMember(Principal group, Principal member) throws Exception;
-    void removeGroupMember(Principal group, Principal member);
-    void addSubOperation(Operation parent, Operation subOperation);
-    void removeSubOperation(Operation parent, Operation subOperation);
-    void addSubResource(Resource resource, Resource subResource);
-    void removeSubResource(Resource resource, Resource subResource);
+    void removeGroupMember(Principal group, Principal member) throws Exception;
+    void addSubOperation(Operation parent, Operation subOperation) throws Exception;
+    void removeSubOperation(Operation parent, Operation subOperation) throws Exception;
+    void addSubResource(Resource resource, Resource subResource) throws Exception;
+    void removeSubResource(Resource resource, Resource subResource) throws Exception;
 
     // These are for listing purposes
-    List<Principal> getPrincipalList();
-    List<Principal> getPrincipalList(PrincipalType type);
+    List<Principal> getPrincipalList() throws SQLException;
+    List<Principal> getPrincipalList(PrincipalType type) throws SQLException;
     List<Principal> getMembersList(Principal pr);
     List<Principal> getFlatMembersList(Principal pr);
 

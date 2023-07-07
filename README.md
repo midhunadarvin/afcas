@@ -35,12 +35,14 @@ Eg.
 
 ##### Add Principal 
 ```
-add principal <name> <principal-type> <display-name> <email> <description> <source>
+add principal <name> <principal-type> [<display-name>] [<email>] [<description>] [<source>]
 ```
 
 Eg.
+
 ``add principal John User John john@gmail.com test TestSource``
 
+``add principal Admin Group ``
 <br/>
 
 ##### Remove Principal
@@ -49,7 +51,10 @@ remove principal <name>
 ```
 
 Eg.
+
 ``remove principal John``
+
+``remove principal Admin ``
 
 <br/>
 
@@ -120,6 +125,83 @@ is-authorized <principle> <operation> <workspace>
 
 Eg.
 ``is-authorized John Edit Workspace``
+
+<br/>
+
+##### Check if Authorized
+```
+is-authorized <principle> <operation> <workspace>
+```
+
+Eg.
+``is-authorized John Edit Workspace``
+
+<br/>
+
+##### Add Group Member
+```
+add group-member <group-name> <member-name>
+```
+
+Eg.
+``add group-member Admin John``
+
+<br/>
+
+##### Remove Group Member
+```
+remove group-member <group-name> <member-name>
+```
+
+Eg.
+``remove group-member Admin John``
+
+<br/>
+
+##### Add Sub Operation
+```
+add sub-operation <parent-operation> <sub-operation>
+```
+
+Eg.
+``add sub-operation ViewEdit View``
+
+<br/>
+
+##### Remove Sub Operation
+```
+remove sub-operation <parent-operation> <sub-operation>
+```
+
+Eg.
+``remove sub-operation ViewEdit View``
+
+<br/>
+
+##### Add Sub Resource
+```
+add sub-resource <parent-resource> <sub-resource>
+```
+
+Eg.
+``add sub-resource Workspace WorkspaceA``
+
+<br/>
+
+##### Remove Sub Resource
+```
+remove sub-resource <parent-resource> <sub-resource>
+```
+
+Eg.
+``remove sub-resource Workspace WorkspaceA``
+
+<br/>
+
+##### List Principal
+```
+get principal
+```
 
 <br/>
 

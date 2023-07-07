@@ -1,7 +1,9 @@
 package com.afcas.commands;
 
 import com.afcas.factory.AuthorizationManagerFactory;
-import com.afcas.objects.*;
+import com.afcas.objects.IAuthorizationManager;
+import com.afcas.objects.Principal;
+import com.afcas.objects.PrincipalType;
 import picocli.CommandLine.Parameters;
 import picocli.CommandLine.Command;
 
@@ -33,7 +35,7 @@ public class AddGroupMember implements Runnable {
                     .build();
 
             authorizationManager.addGroupMember(group, member);
-            System.out.println("Added member " + memberName + " to group " + groupName + " successfully!");
+            System.out.println("Added member \"" + memberName + "\" to group \"" + groupName + "\" successfully!");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

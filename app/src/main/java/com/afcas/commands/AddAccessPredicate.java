@@ -29,12 +29,16 @@ public class AddAccessPredicate implements Runnable {
 
     @Override
     public void run() {
-        ResourceAccessPredicateType pType;
+        ResourceAccessPredicateType resourceAccessPredicateType;
         try {
-            pType = ResourceAccessPredicateType.valueOf(predicateType);
+            resourceAccessPredicateType = ResourceAccessPredicateType.valueOf(predicateType);
         } catch (Exception e) {
             System.out.println("Must be a valid PredicateType : Grant, Deny");
             return;
+        }
+
+        if( resourceAccessPredicateType != ResourceAccessPredicateType.Grant ) {
+            throw new IllegalArgumentException( "Explicit denials are not supported!");
         }
 
         try {
@@ -43,7 +47,7 @@ public class AddAccessPredicate implements Runnable {
                     .principalId(principalName)
                     .operationId(operationName)
                     .resourceId(resourceName)
-                    .accessPredicateType(pType)
+                    .accessPredicateType(resourceAccessPredicateType)
                     .build();
             authorizationManager.addAccessPredicate(resourceAccessPredicate);
             System.out.println("Added permission successfully!");
