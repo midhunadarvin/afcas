@@ -18,3 +18,18 @@ BEGIN
                ,"AddAccessPredicate".PredicateType);
 END;
 $$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE PROCEDURE "RemoveAccessPredicate"(
+        PrincipalId VARCHAR(256),
+        OperationId VARCHAR(10),
+        ResourceId VARCHAR(256),
+        PredicateType INT
+)
+AS $$
+BEGIN
+    DELETE FROM "AccessPredicate" WHERE "PrincipalId" = "RemoveAccessPredicate".PrincipalId
+        AND "OperationId" = "RemoveAccessPredicate".OperationId
+        AND "ResourceId" = "RemoveAccessPredicate".ResourceId
+        AND "PredicateType" = "RemoveAccessPredicate".PredicateType;
+END;
+$$ LANGUAGE plpgsql;

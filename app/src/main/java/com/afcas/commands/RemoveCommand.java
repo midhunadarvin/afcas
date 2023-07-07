@@ -9,7 +9,8 @@ import picocli.CommandLine.Command;
         subcommands = {
                 RemovePrincipalCommand.class,
                 RemoveOperationCommand.class,
-                RemoveResourceCommand.class
+                RemoveResourceCommand.class,
+                RemoveAccessPredicateCommand.class
         }
 )
 public class RemoveCommand implements Runnable {

@@ -93,6 +93,26 @@ Eg.
 
 <br/>
 
+##### Add Permission / Access Predicate
+```
+add permission <principle> <operation> <workspace> <predicateType>
+```
+
+Eg.
+``add permission John Edit Workspace Grant``
+
+<br/>
+
+##### Remove permission / Access Predicate
+```
+remove permission <principle> <operation> <workspace> <predicateType>
+```
+
+Eg.
+``remove permission John Edit Workspace Grant``
+
+<br/>
+
 ##### Check if Authorized
 ```
 is-authorized <principle> <operation> <workspace>

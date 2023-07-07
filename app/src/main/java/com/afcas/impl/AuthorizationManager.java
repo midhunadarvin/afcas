@@ -6,7 +6,6 @@ import com.afcas.objects.Principal;
 import com.afcas.objects.PrincipalType;
 import com.afcas.objects.Resource;
 import com.afcas.objects.ResourceAccessPredicate;
-import com.afcas.objects.ResourceAccessPredicateType;
 import com.afcas.utils.DatabaseHelper;
 
 import java.util.List;
@@ -82,8 +81,14 @@ public class AuthorizationManager implements IAuthorizationManager {
     }
 
     @Override
-    public void removeAccessPredicate(String principalId, String operationId, Resource resource, ResourceAccessPredicateType type) {
-
+    public void removeAccessPredicate(ResourceAccessPredicate resourceAccessPredicate) throws Exception {
+        Object[] parameterValues = {
+                resourceAccessPredicate.getPrincipalId(),
+                resourceAccessPredicate.getOperationId(),
+                resourceAccessPredicate.getResourceId(),
+                resourceAccessPredicate.getAccessPredicateType().ordinal()
+        };
+        DatabaseHelper.executeStoredProcedure("call \"RemoveAccessPredicate\"(?,?,?,?)", parameterValues);
     }
 
     @Override

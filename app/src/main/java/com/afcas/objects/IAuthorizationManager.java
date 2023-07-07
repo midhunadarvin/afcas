@@ -18,7 +18,7 @@ public interface IAuthorizationManager {
 
     // These two methods are for maintaining the ACL
     void addAccessPredicate(ResourceAccessPredicate resourceAccessPredicate) throws Exception;
-    void removeAccessPredicate(String principalId, String operationId, Resource resource, ResourceAccessPredicateType type);
+    void removeAccessPredicate(ResourceAccessPredicate resourceAccessPredicate) throws Exception;
 
     // These are to maintain the hierarchy of principal, operation, and resources
     void addGroupMember(Principal group, Principal member);
