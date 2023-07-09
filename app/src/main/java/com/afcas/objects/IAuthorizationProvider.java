@@ -14,12 +14,12 @@ public interface IAuthorizationProvider {
     // these methods also have uses for authorization purposes
     boolean isMemberOf(String groupId, String memberId) throws SQLException;
     boolean isSubOperation(String opId, String subOpId) throws SQLException;
-    boolean isSubResource(Resource resource, Resource subResource);
+    boolean isSubResource(String resourceId, String subResourceId) throws SQLException;
 
     // These two methods are for offline support
-    List<ResourceAccessPredicate> getAuthorizationDigest(String principalId);
-    List<Operation> getAuthorizedOperations(String principalId, Resource resource);
+    List<ResourceAccessPredicate> getAuthorizationDigest(String principalId) throws SQLException;
+    List<Operation> getAuthorizedOperations(String principalId, String resourceId) throws SQLException;
 
     // This can be used to allow the user to browse authorized resources
-    List<Resource> getAuthorizedResources(String principalId, String operationId);
+    List<Resource> getAuthorizedResources(String principalId, String operationId) throws SQLException;
 }

@@ -8,7 +8,10 @@ import picocli.CommandLine.Command;
         subcommands = {
                 GetPrincipalList.class,
                 GetMembersList.class,
-                GetOperationList.class
+                GetOperationList.class,
+                GetAuthorizationDigest.class,
+                GetAuthorizedOperations.class,
+                GetAuthorizedResources.class
         }
 )
 public class Get implements Runnable {

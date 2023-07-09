@@ -33,6 +33,7 @@ public class CachedRowSetPrinter {
 
         // Print the line separating data and footer
         printLine(totalWidth);
+        cachedRowSet.beforeFirst();
     }
 
     // Method to print a line of '-' characters

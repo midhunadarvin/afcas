@@ -49,7 +49,8 @@ public class AfcasApp {
                     ClearScreen.class,
                     IsAuthorized.class,
                     IsMemberOf.class,
-                    IsSubOperation.class
+                    IsSubOperation.class,
+                    IsSubResource.class
             })
     public static class CliCommands implements Runnable {
         public final ConsoleReader reader;

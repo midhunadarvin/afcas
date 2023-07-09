@@ -238,4 +238,35 @@ Eg.
 
 <br/>
 
+##### Get Authorization Digest
+```
+get authorization-digest <principal-name>
+```
+
+Eg.
+``get authorization-digest John``
+
+<br/>
+
+##### Get Authorized Operations
+```
+get authorized-operations <principal-name> <resource-name>
+```
+
+Eg.
+``get authorized-operations John Workspace``
+
+<br/>
+
+##### Get Authorized Resources
+```
+get authorized-resources <principal-name> <operation-name>
+```
+
+Eg.
+``get authorized-resources John Edit``
+
+<br/>
+
+
 
