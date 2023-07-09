@@ -61,8 +61,22 @@ public class AuthorizationProvider implements IAuthorizationProvider {
     }
 
     @Override
-    public boolean isSubOperation(String opId, String subOpId) {
-        return false;
+    public boolean isSubOperation(String operationId, String subOperationId) throws SQLException {
+        if (operationId == null || operationId.isEmpty()) {
+            throw new IllegalArgumentException("operationId");
+        }
+
+        if (subOperationId == null || subOperationId.isEmpty()) {
+            throw new IllegalArgumentException("subOperationId");
+        }
+
+        Object[] parameterValues = {
+                subOperationId,
+                operationId,
+                EdgeSource.Operation.toString()
+        };
+
+        return (boolean) DatabaseHelper.executeScalar("SELECT * FROM \"EdgeExists\"(?, ?, ?)", parameterValues);
     }
 
     @Override

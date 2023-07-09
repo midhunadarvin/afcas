@@ -227,3 +227,15 @@ Eg.
 ``get operations Edit true``
 
 <br/>
+
+##### Is Sub Operation
+```
+is-sub-operation <operation-name> <sub-operation-name>
+```
+
+Eg.
+``is-sub-operation ViewEdit View``
+
+<br/>
+
+

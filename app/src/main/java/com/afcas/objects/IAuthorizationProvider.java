@@ -13,7 +13,7 @@ public interface IAuthorizationProvider {
 
     // these methods also have uses for authorization purposes
     boolean isMemberOf(String groupId, String memberId) throws SQLException;
-    boolean isSubOperation(String opId, String subOpId);
+    boolean isSubOperation(String opId, String subOpId) throws SQLException;
     boolean isSubResource(Resource resource, Resource subResource);
 
     // These two methods are for offline support

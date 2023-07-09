@@ -48,7 +48,8 @@ public class AfcasApp {
                     ConnectDB.class,
                     ClearScreen.class,
                     IsAuthorized.class,
-                    IsMemberOf.class
+                    IsMemberOf.class,
+                    IsSubOperation.class
             })
     public static class CliCommands implements Runnable {
         public final ConsoleReader reader;
