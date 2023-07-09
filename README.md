@@ -205,6 +205,16 @@ Eg.
 
 <br/>
 
+##### Is Member
+```
+is-member-of <group-name> <member-name>
+```
+
+Eg.
+``is-member-of Admins Bob``
+
+<br/>
+
 ##### List Operations
 ```
 get operations [<parent-operation>] [<is-flat>]

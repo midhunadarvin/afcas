@@ -3,10 +3,7 @@ package com.afcas.impl;
 import java.sql.SQLException;
 import java.util.List;
 
-import com.afcas.objects.Resource;
-import com.afcas.objects.ResourceAccessPredicate;
-import com.afcas.objects.Operation;
-import com.afcas.objects.IAuthorizationProvider;
+import com.afcas.objects.*;
 import com.afcas.utils.DatabaseHelper;
 
 public class AuthorizationProvider implements IAuthorizationProvider {
@@ -45,8 +42,22 @@ public class AuthorizationProvider implements IAuthorizationProvider {
     }
 
     @Override
-    public boolean isMemberOf(String groupId, String memberId) {
-        return false;
+    public boolean isMemberOf(String groupId, String memberId) throws SQLException {
+        if (groupId == null || groupId.isEmpty()) {
+            throw new IllegalArgumentException("groupId");
+        }
+
+        if (memberId == null || memberId.isEmpty()) {
+            throw new IllegalArgumentException("memberId");
+        }
+
+        Object[] parameterValues = {
+                memberId,
+                groupId,
+                EdgeSource.Principal.toString()
+        };
+
+        return (boolean) DatabaseHelper.executeScalar("SELECT * FROM \"EdgeExists\"(?, ?, ?)", parameterValues);
     }
 
     @Override

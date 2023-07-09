@@ -3,11 +3,7 @@
  */
 package com.afcas;
 
-import com.afcas.commands.Add;
-import com.afcas.commands.Get;
-import com.afcas.commands.Remove;
-import com.afcas.commands.ConnectDB;
-import com.afcas.commands.IsAuthorized;
+import com.afcas.commands.*;
 import com.afcas.utils.DatabaseHelper;
 import jline.TerminalFactory;
 import jline.internal.Configuration;
@@ -51,7 +47,8 @@ public class AfcasApp {
                     Remove.class,
                     ConnectDB.class,
                     ClearScreen.class,
-                    IsAuthorized.class
+                    IsAuthorized.class,
+                    IsMemberOf.class
             })
     public static class CliCommands implements Runnable {
         public final ConsoleReader reader;
