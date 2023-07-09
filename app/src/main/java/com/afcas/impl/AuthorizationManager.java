@@ -178,7 +178,7 @@ public class AuthorizationManager implements IAuthorizationManager {
         };
         CachedRowSet result = DatabaseHelper.executeQuery("SELECT * FROM \"GetMembersList\"(?,?)", parameterValues);
         CachedRowSetPrinter.print(result);
-        return buildMemberList(result);
+        return buildPrincipalList(result);
     }
 
     @Override
@@ -189,27 +189,41 @@ public class AuthorizationManager implements IAuthorizationManager {
         };
         CachedRowSet result = DatabaseHelper.executeQuery("SELECT * FROM \"GetMembersList\"(?,?)", parameterValues);
         CachedRowSetPrinter.print(result);
-        return buildMemberList(result);
+        return buildPrincipalList(result);
     }
 
     @Override
-    public List<Operation> getOperationList() {
-        return null;
+    public List<Operation> getOperationList() throws SQLException {
+        CachedRowSet result = DatabaseHelper.executeQuery("SELECT * FROM \"GetOperationList\"()");
+        CachedRowSetPrinter.print(result);
+        return buildOperationList(result);
     }
 
     @Override
-    public List<Operation> getSubOperationsList(Operation op) {
-        return null;
+    public List<Operation> getSubOperationsList(Operation op) throws SQLException {
+        Object[] parameterValues = {
+                op.getId(),
+                0
+        };
+        CachedRowSet result = DatabaseHelper.executeQuery("SELECT * FROM \"GetSubOperationsList\"(?,?)", parameterValues);
+        CachedRowSetPrinter.print(result);
+        return buildOperationList(result);
     }
 
     @Override
-    public List<Operation> getFlatSubOperationsList(Operation op) {
-        return null;
+    public List<Operation> getFlatSubOperationsList(Operation op) throws SQLException {
+        Object[] parameterValues = {
+                op.getId(),
+                1
+        };
+        CachedRowSet result = DatabaseHelper.executeQuery("SELECT * FROM \"GetSubOperationsList\"(?,?)", parameterValues);
+        CachedRowSetPrinter.print(result);
+        return buildOperationList(result);
     }
 
     private List<Principal> buildPrincipalList(CachedRowSet cachedRowSet) throws SQLException {
         cachedRowSet.beforeFirst();
-        List<Principal> result = new ArrayList<Principal>();
+        List<Principal> result = new ArrayList<>();
 
         if (!cachedRowSet.next()) {
             return result;
@@ -232,18 +246,28 @@ public class AuthorizationManager implements IAuthorizationManager {
                 .build();
     }
 
-    private List<Principal> buildMemberList(CachedRowSet cachedRowSet) throws SQLException {
+
+    private List<Operation> buildOperationList(CachedRowSet cachedRowSet) throws SQLException {
         cachedRowSet.beforeFirst();
-        List<Principal> result = new ArrayList<Principal>();
+        List<Operation> result = new ArrayList<>();
+
         if (!cachedRowSet.next()) {
             return result;
         }
 
         do {
-            Principal pr = constructPrincipal(cachedRowSet);
-            result.add(pr);
+            Operation op = constructOperation(cachedRowSet);
+            result.add(op);
         } while (cachedRowSet.next());
 
         return result;
+    }
+
+    private Operation constructOperation(CachedRowSet cachedRowSet) throws SQLException {
+        return Operation.builder()
+                .id(cachedRowSet.getString(1))
+                .name(cachedRowSet.getString(2))
+                .description(cachedRowSet.getString(3))
+                .build();
     }
 }

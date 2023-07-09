@@ -33,3 +33,42 @@ BEGIN
     END IF;
 END;
 $$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION "GetOperationList"()
+RETURNS TABLE (
+    "Id" VARCHAR,
+    "Name" VARCHAR,
+    "Description" VARCHAR
+) AS $$
+BEGIN
+    RETURN QUERY
+    SELECT op."Id",
+           op."Name",
+           op."Description"
+    FROM "Operation" op;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION "GetSubOperationsList"(
+    OperationId VARCHAR(10),
+    IsFlat INT
+)
+RETURNS TABLE (
+    "Id" VARCHAR,
+    "Name" VARCHAR,
+    "Description" VARCHAR
+) AS $$
+BEGIN
+    RETURN QUERY
+    SELECT DISTINCT
+           O."Id",
+           O."Name",
+           O."Description"
+    FROM "Operation" O
+    INNER JOIN "Edge" E ON O."Id" = E."StartVertex"
+    WHERE E."EndVertex" = OperationId
+        AND E."Source" = 'Operation'
+        AND (IsFlat = 1 OR E."Hops" = IsFlat);
+END;
+$$ LANGUAGE plpgsql;
+

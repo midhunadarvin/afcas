@@ -3,11 +3,9 @@ package com.afcas.commands;
 import com.afcas.factory.AuthorizationManagerFactory;
 import com.afcas.objects.IAuthorizationManager;
 import com.afcas.objects.Principal;
-import com.afcas.objects.PrincipalType;
 import picocli.CommandLine.Parameters;
 import picocli.CommandLine.Command;
 
-import java.util.List;
 import java.util.Objects;
 
 @Command(

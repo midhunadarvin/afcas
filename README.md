@@ -205,4 +205,15 @@ Eg.
 
 <br/>
 
-get members Admins true
+##### List Operations
+```
+get operations [<parent-operation>] [<is-flat>]
+```
+
+Eg.
+
+``get operations``    
+``get operations Edit``  
+``get operations Edit true``
+
+<br/>

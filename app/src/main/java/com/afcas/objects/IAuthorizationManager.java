@@ -35,7 +35,7 @@ public interface IAuthorizationManager {
     List<Principal> getMembersList(Principal pr) throws SQLException;
     List<Principal> getFlatMembersList(Principal pr) throws SQLException;
 
-    List<Operation> getOperationList();
-    List<Operation> getSubOperationsList(Operation op);
-    List<Operation> getFlatSubOperationsList(Operation op);
+    List<Operation> getOperationList() throws SQLException;
+    List<Operation> getSubOperationsList(Operation op) throws SQLException;
+    List<Operation> getFlatSubOperationsList(Operation op) throws SQLException;
 }
