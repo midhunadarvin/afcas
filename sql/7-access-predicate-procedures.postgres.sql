@@ -119,3 +119,47 @@ BEGIN
         AND FGL."OperationId" = OperationId;
 END $$
 LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION "IsAuthorized"(principalid character varying, operationid character varying, resourceid character varying)
+ RETURNS boolean
+ LANGUAGE plpgsql
+AS $function$
+BEGIN
+    IF ResourceId IS NULL THEN
+        ResourceId := '';
+    END IF;
+
+    IF EXISTS (
+        SELECT PL."PrincipalId", OL."OperationId", RL."ResourceId"
+        FROM (
+            SELECT "EndVertex" AS "PrincipalId" -- parent principles of @PrincipalId
+            FROM "Edge"
+            WHERE "Source" = 'Principal' AND "StartVertex" = PrincipalId
+            UNION
+            SELECT PrincipalId -- @PrincipalId itself
+        ) PL
+        CROSS JOIN (
+            SELECT "EndVertex" AS "OperationId" -- parent operations of @OperationId
+            FROM "Edge"
+            WHERE "Source" = 'Operation' AND "StartVertex" = OperationId
+            UNION
+            SELECT OperationId -- Operation itself
+        ) OL
+        CROSS JOIN (
+            SELECT "EndVertex" AS "ResourceId" -- parent resources of @ResourceId
+            FROM "Edge"
+            WHERE "Source" = 'Resource' AND "StartVertex" = ResourceId
+            UNION
+            SELECT ResourceId -- @ResourceId itself
+        ) RL
+        INNER JOIN "AccessPredicate" ACL ON PL."PrincipalId" = ACL."PrincipalId"
+            AND OL."OperationId" = ACL."OperationId"
+            AND RL."ResourceId" = ACL."ResourceId"
+    ) THEN
+        RETURN TRUE;
+    ELSE
+        RETURN FALSE;
+    END IF;
+END;
+$function$;
