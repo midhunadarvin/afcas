@@ -60,7 +60,9 @@ public class DatabaseHelper {
             CachedRowSet cachedRowSet = RowSetProvider.newFactory().createCachedRowSet();
             preparedStatement = connection.prepareStatement(sql);
             resultSet = preparedStatement.executeQuery();
-            cachedRowSet.populate(resultSet);
+            if (resultSet.getMetaData().getColumnCount() > 0) {
+                cachedRowSet.populate(resultSet);
+            }
             return cachedRowSet;
         } catch (SQLException e) {
             // Handle exception
@@ -89,6 +91,23 @@ public class DatabaseHelper {
             throw e;
         } finally {
             closeResultSet(resultSet);
+            closeStatement(preparedStatement);
+        }
+    }
+
+    public static int executeUpdate(String sql) throws SQLException {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+
+        try {
+            connection = getConnection();
+            preparedStatement = connection.prepareStatement(sql);
+            return preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            // Handle exception
+            e.printStackTrace();
+            throw e;
+        } finally {
             closeStatement(preparedStatement);
         }
     }

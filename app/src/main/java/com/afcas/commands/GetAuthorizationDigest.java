@@ -16,7 +16,7 @@ public class GetAuthorizationDigest implements Runnable {
     private String principalName;
 
     public GetAuthorizationDigest() {
-        this.authorizationProvider = new AuthorizationProvider(3600);
+        this.authorizationProvider = new AuthorizationProvider();
     }
 
     @Override

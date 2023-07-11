@@ -19,7 +19,7 @@ public class IsSubResource implements Runnable {
     private String subResourceId;
 
     public IsSubResource() {
-        this.authorizationProvider = new AuthorizationProvider(3600);
+        this.authorizationProvider = new AuthorizationProvider();
     }
 
     @Override

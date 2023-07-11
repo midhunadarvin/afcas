@@ -31,3 +31,15 @@ BEGIN
 END $$;
 
 SELECT "Test_TestPrincipal"();
+
+CREATE OR REPLACE FUNCTION "Test_DeleteAllData"()
+RETURNS VOID AS $$
+BEGIN
+    DELETE FROM "Principal";
+    DELETE FROM "Operation";
+    DELETE FROM "Edge";
+    DELETE FROM "AccessPredicate";
+END;
+$$ LANGUAGE plpgsql;
+
+SELECT * FROM "Test_DeleteAllData"();

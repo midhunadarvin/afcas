@@ -11,16 +11,8 @@ import com.afcas.utils.DatabaseHelper;
 import javax.sql.rowset.CachedRowSet;
 
 public class AuthorizationProvider implements IAuthorizationProvider {
-    private static final String _CacheKeyPrefix = "AuthorizationProvider.";
-    private final int _CacheDurationInSeconds;
 
-    public AuthorizationProvider(int cacheDurationInSeconds) {
-        _CacheDurationInSeconds = cacheDurationInSeconds;
-    }
-
-    public int getCacheDurationInSeconds() {
-        return _CacheDurationInSeconds;
-    }
+    public AuthorizationProvider() {}
 
     @Override
     public boolean isAuthorized(String principalId, String operationId, String resourceId) throws SQLException {

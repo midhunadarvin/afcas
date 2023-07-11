@@ -19,7 +19,7 @@ public class GetAuthorizedOperations implements Runnable {
     private String resourceId;
 
     public GetAuthorizedOperations() {
-        this.authorizationProvider = new AuthorizationProvider(3600);
+        this.authorizationProvider = new AuthorizationProvider();
     }
 
     @Override

@@ -19,7 +19,7 @@ public class IsMemberOf implements Runnable {
     private String memberId;
 
     public IsMemberOf() {
-        this.authorizationProvider = new AuthorizationProvider(3600);
+        this.authorizationProvider = new AuthorizationProvider();
     }
 
     @Override
