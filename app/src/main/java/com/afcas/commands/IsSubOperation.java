@@ -19,7 +19,7 @@ public class IsSubOperation implements Runnable {
     private String subOperationId;
 
     public IsSubOperation() {
-        this.authorizationProvider = new AuthorizationProvider(3600);
+        this.authorizationProvider = new AuthorizationProvider();
     }
 
     @Override

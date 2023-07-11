@@ -22,7 +22,7 @@ public class IsAuthorized implements Runnable {
     private String resourceId;
 
     public IsAuthorized() {
-        this.authorizationProvider = new AuthorizationProvider(3600);
+        this.authorizationProvider = new AuthorizationProvider();
     }
 
     @Override
