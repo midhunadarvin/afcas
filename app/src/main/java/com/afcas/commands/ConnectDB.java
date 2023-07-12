@@ -1,6 +1,6 @@
 package com.afcas.commands;
 
-import com.afcas.AfcasApp.CliCommands;
+import com.afcas.CliCommands;
 import com.afcas.utils.DatabaseHelper;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Command;

@@ -64,7 +64,7 @@ BEGIN
       AND B."Source" = source
    );
 
-
+   -- step 4: Insert A-B edge
    INSERT INTO "Edge" (
       "StartVertex",
       "EndVertex",
@@ -79,6 +79,7 @@ BEGIN
       false
    );
 
+   -- step 5: Insert all pairs from candidates table taking care not to re-insert any existing edges
    INSERT INTO "Edge" (
       "StartVertex",
       "EndVertex",
@@ -93,6 +94,8 @@ BEGIN
           false
    FROM "Candidates" C
    WHERE NOT EXISTS (
+      -- filter the candidate edges that already exists. The transitive closure already exists. The check is done during
+      -- deletion to prevent the already existing edges from being deleted.
       SELECT *
       FROM "Edge" E
       WHERE E."StartVertex" = C."StartVertex"
