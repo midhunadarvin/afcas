@@ -11,19 +11,44 @@ All the scripts in the `sql` folder must be run in the postgres database where w
 
 Gradle : https://gradle.org/install/
 
+GraalVM : https://www.graalvm.org/downloads/#
+
 ### Build
+
+To build a JAR file with all the dependencies :
 
 ``gradle shadowJar``
 
+To build a native executable with all the dependencies :
+
+``gradle nativeCompile``
+
+When adding new dependencies, if they are using reflection, we need to generate a `reflect-config.json` file so that graalvm can compile the classes ahead of time and package them in the executable.
+
+Refer :
+https://graalvm.github.io/native-build-tools/latest/gradle-plugin.html#agent-support
+
 ### Run
 
-The build file will be created at `app/build/libs/afcas.jar`
+The JAR build file will be created at `app/build/libs/afcas.jar`
 
 ```java -jar afcas.jar```
+
+The native build executable will be created at `app/build/native/nativeCompile/afcas`
+
+```./afcas```
 
 ### Useage
 
 ##### Connect to Database
+
+The program will ask you for database credentials when it is executed, else you can pass the parameters :
+
+`./afcas -h <db-hostname> -p <db-port> -U <username>`
+
+
+If you need to connect to different database.
+
 ```
 connect-db -h <db-url> -p <db-port> -U <db-user> -W
 ```

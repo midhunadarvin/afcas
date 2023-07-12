@@ -8,14 +8,32 @@
 
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
-    id 'com.github.johnrengelman.shadow' version '8.1.1'
     id 'java'
     id 'application'
+    // Apply GraalVM Native Image plugin
+    id 'org.graalvm.buildtools.native' version '0.9.23'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
+}
+
+group 'com.afcas'
+version '1.0-SNAPSHOT'
+
+mainClassName = 'AfcasApp'
+// Define the main class for the application.
+def mainCommandClass = "com.afcas.AfcasApp"
+
+application{
+    mainClass.set(mainCommandClass)
 }
 
 repositories {
     // Use Maven Central for resolving dependencies.
     mavenCentral()
+    gradlePluginPortal()
+}
+
+configurations {
+    generateConfig
 }
 
 dependencies {
@@ -25,10 +43,14 @@ dependencies {
     // This dependency is used by the application.
     implementation 'com.google.guava:guava:31.1-jre'
     implementation 'info.picocli:picocli:4.7.4'
+    generateConfig 'info.picocli:picocli-codegen:4.7.4'
     implementation 'info.picocli:picocli-shell-jline2:4.7.4'
-    compileOnly 'org.projectlombok:lombok:1.18.22'
-    annotationProcessor 'org.projectlombok:lombok:1.18.22'
     implementation files('libs/postgresql-42.6.0.jar')
+
+    annotationProcessor 'info.picocli:picocli-codegen:4.7.4'
+    annotationProcessor 'org.projectlombok:lombok:1.18.22'
+
+    compileOnly 'org.projectlombok:lombok:1.18.22'
 
     testImplementation "org.mockito:mockito-core:3.+"
 }
@@ -42,17 +64,8 @@ java {
 
 jar {
     manifest {
-        attributes(
-                'Main-Class': 'afcas.AfcasApp'
-        )
+        attributes "Main-Class": mainCommandClass
     }
-}
-
-mainClassName = 'afcas.AfcasApp'
-
-application {
-    // Define the main class for the application.
-    mainClass = 'com.afcas.AfcasApp'
 }
 
 // Output to build/libs/shadow.jar
@@ -61,3 +74,23 @@ shadowJar {
     archiveClassifier.set('')
     archiveVersion.set('')
 }
+
+graalvmNative {
+    toolchainDetection = false
+    metadataRepository {
+        enabled = true
+    }
+    binaries {
+        main {
+            imageName.set('afcas')
+        }
+    }
+}
+
+//task(generateGraalReflectionConfig, dependsOn: 'classes', type: JavaExec) {
+//    mainClass = 'picocli.codegen.aot.graalvm.ReflectionConfigGenerator'
+//    classpath = configurations.generateConfig + sourceSets.main.runtimeClasspath
+//    def outputFile = "${buildDir}/resources/main/META-INF/native-image/${project.group}/${project.name}/reflect-config.json"
+//    args = ["--output=$outputFile", 'com.afcas.CliCommands']
+//}
+//assemble.dependsOn generateGraalReflectionConfig

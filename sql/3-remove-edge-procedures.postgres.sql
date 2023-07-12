@@ -21,14 +21,13 @@ BEGIN
 	-- NOTHING TO DELETE
 	END IF;
 
-	--UPDATE Edge SET DelMark = true
-
+	-- UPDATE Edge SET DelMark = true
    UPDATE "Edge" OE
       SET "DelMark" = true
       FROM (
       	SELECT E."StartVertex", E."EndVertex", E."Hops", E."Source" FROM "Edge" E
 			INNER JOIN (
-					-- 1: all edges that end in A
+					-- 1: ( all edges that end in A ) to B
 					SELECT
 						"StartVertex",
 						EndVertexId AS "EndVertex"
@@ -37,7 +36,7 @@ BEGIN
 					WHERE
 						"EndVertex" = StartVertexId
 				UNION
-					-- 2: all edges that start from B
+					-- 2: A to ( all edges that start from B )
 					SELECT
 						StartVertexId,
 						"EndVertex" AS "EndVertex"
@@ -46,6 +45,7 @@ BEGIN
 					WHERE
 						"StartVertex" = EndVertexId
 				UNION
+				    -- 3: (A’s incoming edges) to (end vertex of B's outgoing edges)
 					SELECT
 						A."StartVertex",
 						B."EndVertex"
@@ -65,6 +65,7 @@ BEGIN
 	OE."StartVertex" = subquery."StartVertex" AND OE."EndVertex" = subquery."EndVertex" AND OE."Hops" = subquery."Hops" AND OE."Source" = subquery."Source";
 
 	WITH "SafeRows" AS (
+	    -- The edges that are not marked for deletion
 		SELECT
 			"StartVertex",
 			"EndVertex"
@@ -79,13 +80,19 @@ BEGIN
 					INNER JOIN
 						"SafeRows" S1
 					 ON
+					    -- 1: Filter safe rows that start with the StartVertex
 					 	S1."StartVertex" = E."StartVertex"
 					 INNER JOIN
 					 	"SafeRows" S2
 					 ON
+					    -- 2: Get all the children of the EndVertices for the filtered edges from 1,
+					    -- and do a second round of filtering such that these EndVertices are equal
+					    -- to the EndVertex marked for deletion.
+					    -- >>> This implies that a alternate path to the end vertex already exists and it should not be marked for deletion
 						S1."EndVertex" = S2."StartVertex"
 						AND S2."EndVertex" = E."EndVertex"
 					WHERE
+					    -- 3: Does a final filtering to check whether that edge has been marked for deletion
 						E."DelMark" = TRUE
 			) AS subquery
 		WHERE
@@ -106,13 +113,25 @@ BEGIN
 			"DelMark" = FALSE
 		FROM (
 			SELECT E."StartVertex", E."EndVertex", E."Hops", E."Source" FROM "Edge" E
-					INNER JOIN "SafeRows" S1
-		               ON S1."StartVertex" = E."StartVertex"
-		            INNER JOIN "SafeRows" S2
-		               ON S1."EndVertex" = S2."StartVertex"
-		            INNER JOIN "SafeRows" S3
-		               ON S2."EndVertex" = S3."StartVertex"
-		              AND S3."EndVertex" = E."EndVertex"
+					INNER JOIN
+					    "SafeRows" S1
+		            ON
+		                -- 1: Filter safe rows that start with the StartVertex
+		                S1."StartVertex" = E."StartVertex"
+		            INNER JOIN
+		                "SafeRows" S2
+		            ON
+		                -- 2: Get all the children of the EndVertices for the filtered edges from 1
+		                S1."EndVertex" = S2."StartVertex"
+		            INNER JOIN
+		                "SafeRows" S3
+		            ON
+		            -- 2: Get all the children of the EndVertices for the filtered edges from 2,
+                    -- and do a third round of filtering such that these EndVertices are equal
+                    -- to the EndVertex marked for deletion.
+                    -- >>> This implies that a alternate path to the end vertex already exists and it should not be marked for deletion
+		                S2."EndVertex" = S3."StartVertex"
+		                AND S3."EndVertex" = E."EndVertex"
 					WHERE
 						E."DelMark" = TRUE
 		) AS subquery
