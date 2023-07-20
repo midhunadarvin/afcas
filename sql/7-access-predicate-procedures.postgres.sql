@@ -1,6 +1,6 @@
 CREATE OR REPLACE PROCEDURE "AddAccessPredicate"(
     PrincipalId VARCHAR(256),
-    OperationId VARCHAR(10),
+    OperationId VARCHAR(100),
     ResourceId VARCHAR(256),
     PredicateType INT
 )
@@ -21,7 +21,7 @@ $$ LANGUAGE plpgsql;
 
 CREATE OR REPLACE PROCEDURE "RemoveAccessPredicate"(
         PrincipalId VARCHAR(256),
-        OperationId VARCHAR(10),
+        OperationId VARCHAR(100),
         ResourceId VARCHAR(256),
         PredicateType INT
 )
@@ -107,7 +107,7 @@ LANGUAGE plpgsql;
 
 CREATE OR REPLACE FUNCTION "GetAuthorizedResources"(
     PrincipalId VARCHAR(36),
-    OperationId VARCHAR(10)
+    OperationId VARCHAR(100)
 )
 RETURNS TABLE ("ResourceId" VARCHAR)
 AS $$

@@ -85,7 +85,7 @@ Eg.
 
 ##### Add Operation 
 ```
-add operation <id> <name>
+add operation <id> [<name>] [<description>]
 ```
 
 Eg.
@@ -292,6 +292,11 @@ Eg.
 ``get authorized-resources John Edit``
 
 <br/>
+
+docker build -t afcas-app .
+
+docker run --name afcas-app -it afcas-app
+
 
 
 
