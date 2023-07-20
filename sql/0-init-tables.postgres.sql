@@ -15,7 +15,7 @@ CREATE UNIQUE INDEX IX_Principal_1 ON "Principal" ("Name");
 
 -- Create table Operation
 CREATE TABLE IF NOT EXISTS "Operation" (
-    "Id" varchar(10) NOT NULL,
+    "Id" varchar(100) NOT NULL,
     "Name" varchar(250) NOT NULL,
     "Description" varchar(500) NOT NULL,
     CONSTRAINT PK_Operation_1 PRIMARY KEY ("Id")
@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS "Operation" (
 
 -- Create table Resource
 CREATE TABLE IF NOT EXISTS "Resource" (
-    "Id" varchar(36) NOT NULL,
+    "Id" varchar(100) NOT NULL,
     "Name" varchar(100),
     PRIMARY KEY ("Id")
 );
