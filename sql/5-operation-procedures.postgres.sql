@@ -1,5 +1,5 @@
 CREATE OR REPLACE PROCEDURE "AddOrUpdateOperation"(
-  Id varchar(10),
+  Id varchar(100),
   Name varchar(250),
   Description varchar(500)
 )
@@ -22,7 +22,7 @@ END;
 $$ LANGUAGE plpgsql;
 
 CREATE OR REPLACE PROCEDURE "RemoveOperation"(
-    Id VARCHAR(10)
+    Id VARCHAR(100)
 )
 AS $$
 BEGIN
@@ -50,7 +50,7 @@ END;
 $$ LANGUAGE plpgsql;
 
 CREATE OR REPLACE FUNCTION "GetSubOperationsList"(
-    OperationId VARCHAR(10),
+    OperationId VARCHAR(100),
     IsFlat INT
 )
 RETURNS TABLE (

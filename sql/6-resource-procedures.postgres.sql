@@ -1,5 +1,5 @@
 CREATE OR REPLACE PROCEDURE "AddOrUpdateResource"(
-  Id varchar(10),
+  Id varchar(100),
   Name varchar(250)
 )
 AS $$
@@ -20,7 +20,7 @@ END;
 $$ LANGUAGE plpgsql;
 
 CREATE OR REPLACE PROCEDURE "RemoveResource"(
-    Id VARCHAR(10)
+    Id VARCHAR(100)
 )
 AS $$
 BEGIN

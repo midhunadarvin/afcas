@@ -1,8 +1,14 @@
 {
   "resources":{
-  "includes":[{
-    "pattern":"\\QMETA-INF/services/java.sql.Driver\\E"
-  }]},
+    "includes":[
+      {
+        "pattern":"\\QMETA-INF/services/java.sql.Driver\\E"
+      },
+      {
+        "pattern":"\\Qjavax/sql/rowset/rowset.properties\\E"
+      }
+    ]
+  },
   "bundles":[{
     "name":"jline.console.completer.CandidateListCompletionHandler",
     "locales":["und"]

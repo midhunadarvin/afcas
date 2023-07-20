@@ -276,6 +276,11 @@
     ]
   },
   {
+    "name": "java.sql.Types",
+    "allDeclaredFields": true,
+    "queryAllDeclaredMethods": true
+  },
+  {
     "name": "java.time.Duration",
     "methods": [
       {
@@ -450,6 +455,17 @@
   },
   {
     "name": "jline.UnixTerminal",
+    "allDeclaredFields": true,
+    "queryAllDeclaredMethods": true,
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "com.sun.rowset.providers.RIOptimisticProvider",
     "allDeclaredFields": true,
     "queryAllDeclaredMethods": true,
     "methods": [
