@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{layout :: head('Authorized Resources')}"></head>
+<body>
+<nav th:replace="~{layout :: navbar}"></nav>
+
+<div class="container mt-4">
+    <div class="mb-4">
+        <a href="/authorization" class="btn btn-secondary">
+            <i class="bi bi-arrow-left"></i> Back to Authorization
+        </a>
+    </div>
+
+    <h1 class="mb-4">
+        <i class="bi bi-folder"></i> Authorized Resources
+    </h1>
+
+    <div class="alert alert-info">
+        Principal: <strong th:text="${principalId}">Principal</strong><br>
+        Operation: <strong th:text="${operationId}">Operation</strong>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h5 class="mb-0">Resources this principal can access with the operation</h5>
+        </div>
+        <div class="card-body">
+            <ul class="list-group" th:if="${!#lists.isEmpty(resources)}">
+                <li class="list-group-item" th:each="resource : ${resources}">
+                    <i class="bi bi-folder text-warning"></i> 
+                    <span th:text="${resource.name != null ? resource.name : resource.id}">Resource</span>
+                </li>
+            </ul>
+            <div th:if="${#lists.isEmpty(resources)}" class="text-center text-muted py-4">
+                No authorized resources found.
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer th:replace="~{layout :: footer}"></footer>
+<th:block th:replace="~{layout :: scripts}"></th:block>
+</body>
+</html>

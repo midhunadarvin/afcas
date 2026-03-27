@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{layout :: head('Resources')}"></head>
+<body>
+<nav th:replace="~{layout :: navbar}"></nav>
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1><i class="bi bi-folder"></i> Resources</h1>
+        <a href="/resources/new" class="btn btn-warning">
+            <i class="bi bi-plus-circle"></i> Add Resource
+        </a>
+    </div>
+
+    <div th:if="${error}" class="alert alert-danger" role="alert">
+        <span th:text="${error}"></span>
+    </div>
+
+    <div th:if="${info}" class="alert alert-info" role="alert">
+        <span th:text="${info}"></span>
+    </div>
+
+    <div th:if="${success}" class="alert alert-success" role="alert">
+        <span th:text="${success}"></span>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <div class="alert alert-warning">
+                <i class="bi bi-exclamation-triangle"></i> 
+                Resource listing is not directly supported by the current API. 
+                Resources are managed through permissions. Use the <a href="/permissions">Permissions</a> page to add access predicates 
+                which will create resources as needed.
+            </div>
+            
+            <p class="text-muted">To add a resource, navigate to <a href="/permissions/new">Add Permission</a> and specify the resource name.</p>
+        </div>
+    </div>
+</div>
+
+<footer th:replace="~{layout :: footer}"></footer>
+<th:block th:replace="~{layout :: scripts}"></th:block>
+</body>
+</html>

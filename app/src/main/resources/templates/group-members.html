@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{layout :: head('Group Members')}"></head>
+<body>
+<nav th:replace="~{layout :: navbar}"></nav>
+
+<div class="container mt-4">
+    <div class="mb-4">
+        <a href="/principals" class="btn btn-secondary">
+            <i class="bi bi-arrow-left"></i> Back to Principals
+        </a>
+    </div>
+
+    <h1 class="mb-4">
+        <i class="bi bi-people"></i> Members of <span th:text="${group.name}">Group Name</span>
+    </h1>
+
+    <div th:if="${error}" class="alert alert-danger" role="alert">
+        <span th:text="${error}"></span>
+    </div>
+
+    <div th:if="${success}" class="alert alert-success" role="alert">
+        <span th:text="${success}"></span>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Current Members</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table table-sm">
+                        <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="member : ${members}">
+                            <td th:text="${member.name}">Member</td>
+                            <td>
+                                <span th:if="${member.principalType.name() == 'User'}" class="badge bg-primary">User</span>
+                                <span th:if="${member.principalType.name() == 'Group'}" class="badge bg-secondary">Group</span>
+                            </td>
+                            <td>
+                                <form th:action="@{/principals/{groupId}/members/{memberId}/remove(groupId=${group.id}, memberId=${member.id})}" 
+                                      method="post" style="display:inline;"
+                                      onsubmit="return confirm('Remove this member?');">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">
+                                        <i class="bi bi-person-dash"></i> Remove
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(members)}">
+                            <td colspan="3" class="text-center text-muted">No members</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Add Member</h5>
+                </div>
+                <div class="card-body">
+                    <form th:action="@{/principals/{groupId}/members(groupId=${group.id})}" method="post">
+                        <div class="mb-3">
+                            <label for="memberId" class="form-label">Select Principal</label>
+                            <select class="form-select" id="memberId" name="memberId" required>
+                                <option value="">-- Select --</option>
+                                <option th:each="principal : ${allPrincipals}" 
+                                        th:value="${principal.id}" 
+                                        th:text="${principal.name + ' (' + principal.principalType + ')'}">
+                                    Principal
+                                </option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-person-plus"></i> Add Member
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer th:replace="~{layout :: footer}"></footer>
+<th:block th:replace="~{layout :: scripts}"></th:block>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{layout :: head('Dashboard')}"></head>
+<body>
+<nav th:replace="~{layout :: navbar}"></nav>
+
+<div class="container mt-4">
+    <h1 class="mb-4"><i class="bi bi-shield-lock"></i> AFCAS Dashboard</h1>
+    
+    <div class="alert alert-info" role="alert">
+        <i class="bi bi-info-circle"></i> Welcome to the AFCAS Web Interface. Use the navigation menu to manage authorization entities.
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="bi bi-people display-1 text-primary"></i>
+                    <h5 class="card-title mt-3">Principals</h5>
+                    <p class="card-text">Manage users and groups in the authorization system.</p>
+                    <a href="/principals" class="btn btn-primary">Manage Principals</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="bi bi-gear display-1 text-success"></i>
+                    <h5 class="card-title mt-3">Operations</h5>
+                    <p class="card-text">Define operations that can be performed on resources.</p>
+                    <a href="/operations" class="btn btn-success">Manage Operations</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="bi bi-folder display-1 text-warning"></i>
+                    <h5 class="card-title mt-3">Resources</h5>
+                    <p class="card-text">Manage resources that principals can access.</p>
+                    <a href="/resources" class="btn btn-warning">Manage Resources</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="bi bi-key display-1 text-danger"></i>
+                    <h5 class="card-title mt-3">Permissions</h5>
+                    <p class="card-text">Configure access predicates (Grant/Deny) for principals on operations and resources.</p>
+                    <a href="/permissions" class="btn btn-danger">Manage Permissions</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="bi bi-check-circle display-1 text-info"></i>
+                    <h5 class="card-title mt-3">Authorization</h5>
+                    <p class="card-text">Check authorization status and view authorization digests.</p>
+                    <a href="/authorization" class="btn btn-info">Check Authorization</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer th:replace="~{layout :: footer}"></footer>
+<th:block th:replace="~{layout :: scripts}"></th:block>
+</body>
+</html>

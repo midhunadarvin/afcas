@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{layout :: head('Authorization Digest')}"></head>
+<body>
+<nav th:replace="~{layout :: navbar}"></nav>
+
+<div class="container mt-4">
+    <div class="mb-4">
+        <a href="/authorization" class="btn btn-secondary">
+            <i class="bi bi-arrow-left"></i> Back to Authorization
+        </a>
+    </div>
+
+    <h1 class="mb-4">
+        <i class="bi bi-list-ul"></i> Authorization Digest for <span th:text="${principalId}">Principal</span>
+    </h1>
+
+    <div th:if="${error}" class="alert alert-danger" role="alert">
+        <span th:text="${error}"></span>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h5 class="mb-0">All Permissions</h5>
+        </div>
+        <div class="card-body">
+            <table class="table table-striped" th:if="${!#lists.isEmpty(digest)}">
+                <thead>
+                <tr>
+                    <th>Operation</th>
+                    <th>Resource</th>
+                    <th>Access Type</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="predicate : ${digest}">
+                    <td th:text="${predicate.operationId}">Operation</td>
+                    <td th:text="${predicate.resourceId}">Resource</td>
+                    <td>
+                        <span th:if="${predicate.accessPredicateType.name() == 'Grant'}" class="badge bg-success">
+                            <i class="bi bi-check"></i> Grant
+                        </span>
+                        <span th:if="${predicate.accessPredicateType.name() == 'Deny'}" class="badge bg-danger">
+                            <i class="bi bi-x"></i> Deny
+                        </span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div th:if="${#lists.isEmpty(digest)}" class="text-center text-muted py-4">
+                No permissions found for this principal.
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer th:replace="~{layout :: footer}"></footer>
+<th:block th:replace="~{layout :: scripts}"></th:block>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:fragment="head(title)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${title} + ' - AFCAS'">AFCAS</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+</head>
+
+<body>
+<nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand" href="/">
+            <i class="bi bi-shield-lock"></i> AFCAS
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/"><i class="bi bi-house"></i> Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/principals"><i class="bi bi-people"></i> Principals</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/operations"><i class="bi bi-gear"></i> Operations</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/resources"><i class="bi bi-folder"></i> Resources</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/permissions"><i class="bi bi-key"></i> Permissions</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/authorization"><i class="bi bi-check-circle"></i> Authorization</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<footer th:fragment="footer" class="container mt-5 mb-3 text-center text-muted">
+    <small>AFCAS - A Fairly Capable Authorization Sub-System</small>
+</footer>
+
+<th:block th:fragment="scripts">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</th:block>
+</body>
+</html>

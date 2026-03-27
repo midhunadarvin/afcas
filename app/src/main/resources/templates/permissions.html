@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{layout :: head('Permissions')}"></head>
+<body>
+<nav th:replace="~{layout :: navbar}"></nav>
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1><i class="bi bi-key"></i> Permissions</h1>
+        <a href="/permissions/new" class="btn btn-danger">
+            <i class="bi bi-plus-circle"></i> Add Permission
+        </a>
+    </div>
+
+    <div th:if="${error}" class="alert alert-danger" role="alert">
+        <span th:text="${error}"></span>
+    </div>
+
+    <div th:if="${success}" class="alert alert-success" role="alert">
+        <span th:text="${success}"></span>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <p class="text-muted">
+                <i class="bi bi-info-circle"></i> 
+                Permissions are managed through access predicates. Use the form below or the 
+                <a href="/permissions/new">Add Permission</a> page to grant or deny access.
+            </p>
+            
+            <div class="alert alert-info">
+                <strong>How permissions work:</strong><br>
+                <ul class="mb-0">
+                    <li><strong>Grant:</strong> Allows the principal to perform the operation on the resource</li>
+                    <li><strong>Deny:</strong> Explicitly denies the principal from performing the operation on the resource</li>
+                </ul>
+            </div>
+
+            <a href="/permissions/new" class="btn btn-danger">
+                <i class="bi bi-key"></i> Add New Permission
+            </a>
+        </div>
+    </div>
+</div>
+
+<footer th:replace="~{layout :: footer}"></footer>
+<th:block th:replace="~{layout :: scripts}"></th:block>
+</body>
+</html>
