@@ -19,3 +19,8 @@ gradle-app.setting
 .project
 # JDT-specific (Eclipse Java Development Tools)
 .classpath
+
+# VitePress documentation
+docs/node_modules/
+docs/.vitepress/cache/
+docs/.vitepress/dist/
