@@ -19,7 +19,7 @@ afcas/
 │       │   │   ├── objects/                   # Domain model
 │       │   │   ├── repository/                # Repos + jdbc/
 │       │   │   ├── utils/                     # DatabaseHelper, etc.
-│       │   │   └── web/                       # Spring Boot UI
+│       │   │   └── web/                       # Spring Boot UI (bootRun entry)
 │       │   └── resources/
 │       │       ├── application.properties
 │       │       ├── db/init/                   # Embedded SQL scripts

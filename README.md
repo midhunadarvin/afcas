@@ -38,20 +38,24 @@ Historical long-form notes also remain in the repo root (`ARCHITECTURE.md`, `BUI
 ```bash
 # Database
 docker compose up -d
-# Apply SQL scripts (see docs for details)
+# Apply SQL scripts (see docs for details), or let the web app auto-init schema
 for f in sql/[0-9]*.postgres.sql; do psql -U postgres -d afcas -f "$f"; done
 
-# Build CLI fat JAR
+# Web UI
+./gradlew bootRun
+# → http://localhost:8080
+
+# CLI fat JAR
 ./gradlew shadowJar
 java -jar app/build/libs/afcas.jar -h localhost -p 5432 -U postgres -W
 ```
 
-Native image (GraalVM):
-
-```bash
-./gradlew nativeCompile
-./app/build/native/nativeCompile/afcas
-```
+| Runtime | Command | Artifact |
+|---------|---------|----------|
+| Web UI (dev) | `./gradlew bootRun` | — |
+| Web UI (JAR) | `./gradlew bootJar` | `app/build/libs/afcas-web-1.0-SNAPSHOT.jar` |
+| CLI | `./gradlew shadowJar` | `app/build/libs/afcas.jar` |
+| Native CLI | `./gradlew nativeCompile` | `app/build/native/nativeCompile/afcas` |
 
 Docker (native image Dockerfile):
 

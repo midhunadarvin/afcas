@@ -1,7 +1,6 @@
 package com.afcas.web.service;
 
 import com.afcas.impl.AuthorizationManager;
-import com.afcas.impl.AuthorizationProvider;
 import com.afcas.objects.*;
 import org.springframework.stereotype.Service;
 
@@ -12,11 +11,16 @@ import java.util.List;
 public class AuthorizationService {
 
     private final AuthorizationManager authorizationManager;
-    private final AuthorizationProvider authorizationProvider;
+    private final IAuthorizationProvider authorizationProvider;
 
-    public AuthorizationService() {
+    /**
+     * @param authorizationProvider selected by {@code afcas.engine.mode}
+     *        (SQL {@link com.afcas.impl.AuthorizationProvider} or Java
+     *        {@link com.afcas.engine.AuthorizationEngine})
+     */
+    public AuthorizationService(IAuthorizationProvider authorizationProvider) {
         this.authorizationManager = new AuthorizationManager();
-        this.authorizationProvider = new AuthorizationProvider();
+        this.authorizationProvider = authorizationProvider;
     }
 
     // Principal operations

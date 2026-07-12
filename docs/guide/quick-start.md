@@ -62,17 +62,22 @@ is-authorized John Edit Workspace
 
 Expected: John is authorized because he is a member of Admin, which holds the Grant.
 
-## 6. (Optional) Start the Web UI
-
-If your build includes the Spring Boot entry point:
+## 6. Start the Web UI
 
 ```bash
 ./gradlew bootRun
-# or
-java -jar app/build/libs/app-1.0-SNAPSHOT.jar
 ```
 
 Open **http://localhost:8080**.
+
+Packaged form:
+
+```bash
+./gradlew bootJar
+java -jar app/build/libs/afcas-web-1.0-SNAPSHOT.jar
+```
+
+See [Running the Web UI](/web/running).
 
 ## What to read next
 

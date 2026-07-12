@@ -1,61 +1,60 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head th:replace="~{layout :: head('Add Principal')}"></head>
-<body>
-<nav th:replace="~{layout :: navbar}"></nav>
-
-<div class="container mt-4">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">
-                    <h4 class="mb-0"><i class="bi bi-person-plus"></i> Add New Principal</h4>
-                </div>
-                <div class="card-body">
-                    <form th:action="@{/principals}" method="post">
-                        <div class="mb-3">
-                            <label for="name" class="form-label">Name <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="name" name="name" required>
+<body class="app-body">
+<div class="app-shell">
+    <aside th:replace="~{layout :: sidebar}"></aside>
+    <div class="app-main">
+        <header th:replace="~{layout :: topbar('Add principal', 'Create a user or group identity')}"></header>
+        <main class="app-content">
+            <div class="container-fluid app-container">
+                <div class="form-panel">
+                    <div class="card card-elevated">
+                        <div class="card-header">
+                            <h4><i class="bi bi-person-plus"></i> New principal</h4>
                         </div>
-                        <div class="mb-3">
-                            <label for="principalType" class="form-label">Type <span class="text-danger">*</span></label>
-                            <select class="form-select" id="principalType" name="principalType" required>
-                                <option value="User">User</option>
-                                <option value="Group">Group</option>
-                            </select>
+                        <div class="card-body">
+                            <form th:action="@{/principals}" method="post">
+                                <div class="mb-3">
+                                    <label for="name" class="form-label">Name <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="name" name="name" required placeholder="e.g. john or admins">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="principalType" class="form-label">Type <span class="text-danger">*</span></label>
+                                    <select class="form-select" id="principalType" name="principalType" required>
+                                        <option value="User">User</option>
+                                        <option value="Group">Group</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="displayName" class="form-label">Display name</label>
+                                    <input type="text" class="form-control" id="displayName" name="displayName" placeholder="Human-readable label">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Email</label>
+                                    <input type="email" class="form-control" id="email" name="email" placeholder="user@example.com">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="description" class="form-label">Description</label>
+                                    <textarea class="form-control" id="description" name="description" rows="3" placeholder="Optional notes"></textarea>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="dataSource" class="form-label">Data source</label>
+                                    <input type="text" class="form-control" id="dataSource" name="dataSource" placeholder="manual, ldap, …">
+                                </div>
+                                <div class="d-flex justify-content-between gap-2">
+                                    <a href="/principals" class="btn btn-secondary"><i class="bi bi-arrow-left"></i> Cancel</a>
+                                    <button type="submit" class="btn btn-primary"><i class="bi bi-check-lg"></i> Create principal</button>
+                                </div>
+                            </form>
                         </div>
-                        <div class="mb-3">
-                            <label for="displayName" class="form-label">Display Name</label>
-                            <input type="text" class="form-control" id="displayName" name="displayName">
-                        </div>
-                        <div class="mb-3">
-                            <label for="email" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="email" name="email">
-                        </div>
-                        <div class="mb-3">
-                            <label for="description" class="form-label">Description</label>
-                            <textarea class="form-control" id="description" name="description" rows="3"></textarea>
-                        </div>
-                        <div class="mb-3">
-                            <label for="dataSource" class="form-label">Data Source</label>
-                            <input type="text" class="form-control" id="dataSource" name="dataSource">
-                        </div>
-                        <div class="d-flex justify-content-between">
-                            <a href="/principals" class="btn btn-secondary">
-                                <i class="bi bi-arrow-left"></i> Cancel
-                            </a>
-                            <button type="submit" class="btn btn-primary">
-                                <i class="bi bi-check-circle"></i> Create Principal
-                            </button>
-                        </div>
-                    </form>
+                    </div>
                 </div>
             </div>
-        </div>
+        </main>
+        <footer th:replace="~{layout :: footer}"></footer>
     </div>
 </div>
-
-<footer th:replace="~{layout :: footer}"></footer>
 <th:block th:replace="~{layout :: scripts}"></th:block>
 </body>
 </html>

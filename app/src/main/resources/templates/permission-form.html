@@ -1,72 +1,68 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head th:replace="~{layout :: head('Add Permission')}"></head>
-<body>
-<nav th:replace="~{layout :: navbar}"></nav>
-
-<div class="container mt-4">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">
-                    <h4 class="mb-0"><i class="bi bi-key"></i> Add New Permission</h4>
-                </div>
-                <div class="card-body">
-                    <div th:if="${error}" class="alert alert-danger" role="alert">
-                        <span th:text="${error}"></span>
+<body class="app-body">
+<div class="app-shell">
+    <aside th:replace="~{layout :: sidebar}"></aside>
+    <div class="app-main">
+        <header th:replace="~{layout :: topbar('Add permission', 'Create a grant or deny access predicate')}"></header>
+        <main class="app-content">
+            <div class="container-fluid app-container">
+                <div class="form-panel">
+                    <div class="card card-elevated">
+                        <div class="card-header"><h4><i class="bi bi-key"></i> New permission</h4></div>
+                        <div class="card-body">
+                            <div th:if="${error}" class="alert alert-danger" role="alert">
+                                <i class="bi bi-exclamation-triangle-fill"></i><span th:text="${error}"></span>
+                            </div>
+                            <form th:action="@{/permissions}" method="post">
+                                <div class="mb-3">
+                                    <label for="principalId" class="form-label">Principal <span class="text-danger">*</span></label>
+                                    <select class="form-select" id="principalId" name="principalId" required>
+                                        <option value="">Select principal…</option>
+                                        <option th:each="principal : ${principals}"
+                                                th:value="${principal.id}"
+                                                th:text="${principal.name + ' (' + principal.principalType + ')'}">
+                                            Principal
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="operationId" class="form-label">Operation <span class="text-danger">*</span></label>
+                                    <select class="form-select" id="operationId" name="operationId" required>
+                                        <option value="">Select operation…</option>
+                                        <option th:each="operation : ${operations}"
+                                                th:value="${operation.id}"
+                                                th:text="${operation.name != null ? operation.name : operation.id}">
+                                            Operation
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="resourceId" class="form-label">Resource <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control table-mono" id="resourceId" name="resourceId"
+                                           placeholder="Resource id" required>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="accessPredicateType" class="form-label">Access type <span class="text-danger">*</span></label>
+                                    <select class="form-select" id="accessPredicateType" name="accessPredicateType" required>
+                                        <option value="Grant">Grant — allow access</option>
+                                        <option value="Deny">Deny — block access</option>
+                                    </select>
+                                </div>
+                                <div class="d-flex justify-content-between gap-2">
+                                    <a href="/permissions" class="btn btn-secondary"><i class="bi bi-arrow-left"></i> Cancel</a>
+                                    <button type="submit" class="btn btn-primary"><i class="bi bi-check-lg"></i> Create permission</button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
-
-                    <form th:action="@{/permissions}" method="post">
-                        <div class="mb-3">
-                            <label for="principalId" class="form-label">Principal <span class="text-danger">*</span></label>
-                            <select class="form-select" id="principalId" name="principalId" required>
-                                <option value="">-- Select Principal --</option>
-                                <option th:each="principal : ${principals}" 
-                                        th:value="${principal.id}" 
-                                        th:text="${principal.name + ' (' + principal.principalType + ')'}">
-                                    Principal
-                                </option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="operationId" class="form-label">Operation <span class="text-danger">*</span></label>
-                            <select class="form-select" id="operationId" name="operationId" required>
-                                <option value="">-- Select Operation --</option>
-                                <option th:each="operation : ${operations}" 
-                                        th:value="${operation.id}" 
-                                        th:text="${operation.name != null ? operation.name : operation.id}">
-                                    Operation
-                                </option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="resourceId" class="form-label">Resource <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="resourceId" name="resourceId" 
-                                   placeholder="Enter resource name" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="accessPredicateType" class="form-label">Access Type <span class="text-danger">*</span></label>
-                            <select class="form-select" id="accessPredicateType" name="accessPredicateType" required>
-                                <option value="Grant">Grant - Allow access</option>
-                                <option value="Deny">Deny - Block access</option>
-                            </select>
-                        </div>
-                        <div class="d-flex justify-content-between">
-                            <a href="/permissions" class="btn btn-secondary">
-                                <i class="bi bi-arrow-left"></i> Cancel
-                            </a>
-                            <button type="submit" class="btn btn-danger">
-                                <i class="bi bi-check-circle"></i> Create Permission
-                            </button>
-                        </div>
-                    </form>
                 </div>
             </div>
-        </div>
+        </main>
+        <footer th:replace="~{layout :: footer}"></footer>
     </div>
 </div>
-
-<footer th:replace="~{layout :: footer}"></footer>
 <th:block th:replace="~{layout :: scripts}"></th:block>
 </body>
 </html>

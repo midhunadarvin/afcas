@@ -3,51 +3,96 @@
 <head th:fragment="head(title)">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title th:text="${title} + ' - AFCAS'">AFCAS</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <title th:text="${title} + ' · AFCAS'">AFCAS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link th:href="@{/css/app.css}" rel="stylesheet">
 </head>
 
 <body>
-<nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container">
-        <a class="navbar-brand" href="/">
-            <i class="bi bi-shield-lock"></i> AFCAS
+<!-- Sidebar fragment -->
+<aside th:fragment="sidebar" class="app-sidebar" aria-label="Main navigation">
+    <a class="app-brand" href="/">
+        <span class="app-brand-mark"><i class="bi bi-shield-lock-fill"></i></span>
+        <span class="app-brand-text">
+            <strong>AFCAS</strong>
+            <span>Authorization</span>
+        </span>
+    </a>
+
+    <nav class="app-nav">
+        <div class="app-nav-label">Overview</div>
+        <a class="app-nav-link"
+           th:classappend="${currentPath == '/' } ? ' is-active'"
+           href="/">
+            <i class="bi bi-grid-1x2"></i> Dashboard
         </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
+
+        <div class="app-nav-label">Directory</div>
+        <a class="app-nav-link"
+           th:classappend="${#strings.startsWith(currentPath, '/principals')} ? ' is-active'"
+           href="/principals">
+            <i class="bi bi-people"></i> Principals
+        </a>
+        <a class="app-nav-link"
+           th:classappend="${#strings.startsWith(currentPath, '/operations')} ? ' is-active'"
+           href="/operations">
+            <i class="bi bi-lightning-charge"></i> Operations
+        </a>
+        <a class="app-nav-link"
+           th:classappend="${#strings.startsWith(currentPath, '/resources')} ? ' is-active'"
+           href="/resources">
+            <i class="bi bi-box"></i> Resources
+        </a>
+
+        <div class="app-nav-label">Access control</div>
+        <a class="app-nav-link"
+           th:classappend="${#strings.startsWith(currentPath, '/permissions')} ? ' is-active'"
+           href="/permissions">
+            <i class="bi bi-key"></i> Permissions
+        </a>
+        <a class="app-nav-link"
+           th:classappend="${#strings.startsWith(currentPath, '/authorization')} ? ' is-active'"
+           href="/authorization">
+            <i class="bi bi-shield-check"></i> Authorization
+        </a>
+    </nav>
+
+    <div class="app-sidebar-footer">
+        A fairly capable authorization sub-system
+    </div>
+</aside>
+
+<!-- Topbar fragment: pageTitle, pageSubtitle optional via params -->
+<header th:fragment="topbar(pageTitle, pageSubtitle)" class="app-topbar">
+    <div class="d-flex align-items-center gap-2 min-w-0">
+        <button type="button" class="sidebar-toggle" data-sidebar-toggle aria-label="Toggle navigation">
+            <i class="bi bi-list"></i>
         </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav me-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="/"><i class="bi bi-house"></i> Dashboard</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/principals"><i class="bi bi-people"></i> Principals</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/operations"><i class="bi bi-gear"></i> Operations</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/resources"><i class="bi bi-folder"></i> Resources</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/permissions"><i class="bi bi-key"></i> Permissions</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/authorization"><i class="bi bi-check-circle"></i> Authorization</a>
-                </li>
-            </ul>
+        <div class="app-topbar-title">
+            <h1 th:text="${pageTitle}">Page</h1>
+            <p th:if="${pageSubtitle != null and !#strings.isEmpty(pageSubtitle)}" th:text="${pageSubtitle}">Subtitle</p>
         </div>
     </div>
-</nav>
+    <div class="d-none d-md-flex align-items-center gap-2">
+        <span class="badge bg-primary"><i class="bi bi-hdd-network"></i> Admin</span>
+    </div>
+</header>
 
-<footer th:fragment="footer" class="container mt-5 mb-3 text-center text-muted">
-    <small>AFCAS - A Fairly Capable Authorization Sub-System</small>
+<footer th:fragment="footer" class="app-footer">
+    <div class="d-flex flex-wrap justify-content-between gap-2">
+        <span>AFCAS · A Fairly Capable Authorization Sub-System</span>
+        <span class="text-muted">Hierarchical RBAC for teams &amp; resources</span>
+    </div>
 </footer>
 
 <th:block th:fragment="scripts">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <div class="sidebar-backdrop" data-sidebar-backdrop></div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script th:src="@{/js/app.js}"></script>
 </th:block>
 </body>
 </html>

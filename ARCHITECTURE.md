@@ -365,16 +365,25 @@ SELECT "IsAuthorized"('john', 'Edit', 'Workspace');  -- TRUE (inherited from adm
 - SQL scripts executed (see `sql/` folder)
 - Java 21 (or 17+)
 
-### Start the Web GUI
+### Start the Web UI
 ```bash
-cd /testbed/afcas
-./gradlew :app:bootJar
-java -jar app/build/libs/app-1.0-SNAPSHOT.jar
+./gradlew bootRun
 # Open http://localhost:8080
+
+./gradlew bootJar
+java -jar app/build/libs/afcas-web-1.0-SNAPSHOT.jar
+```
+
+### Start the CLI
+```bash
+./gradlew shadowJar
+java -jar app/build/libs/afcas.jar -h localhost -p 5432 -U postgres -W
+# or
+./gradlew :app:run --args='-h localhost -p 5432 -U postgres'
 ```
 
 ### Database Configuration
-Defaults in `application.properties`:
+Defaults in `application.properties` (web / Spring):
 ```properties
 afcas.database.host=localhost
 afcas.database.port=5432
@@ -382,9 +391,11 @@ afcas.database.username=postgres
 afcas.database.password=123456
 ```
 
-Override via command line:
+CLI connection uses PicoCLI flags (`-h`, `-p`, `-U`, `-W`) instead.
+
+Override web config:
 ```bash
-java -jar app.jar --afcas.database.password=yourpass
+java -jar app/build/libs/afcas-web-1.0-SNAPSHOT.jar --afcas.database.password=yourpass
 ```
 
 ---

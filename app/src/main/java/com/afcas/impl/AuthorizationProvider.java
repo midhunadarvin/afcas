@@ -7,9 +7,14 @@ import java.util.List;
 import com.afcas.objects.*;
 import com.afcas.utils.CachedRowSetPrinter;
 import com.afcas.utils.DatabaseHelper;
+import org.springframework.stereotype.Service;
 
 import javax.sql.rowset.CachedRowSet;
 
+/**
+ * SQL-mode authorization provider (PostgreSQL stored procedures / functions).
+ */
+@Service
 public class AuthorizationProvider implements IAuthorizationProvider {
 
     public AuthorizationProvider() {}

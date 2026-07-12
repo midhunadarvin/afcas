@@ -14,8 +14,8 @@
 
 ## Interfaces
 
-1. **CLI** — PicoCLI interactive shell (`afcas.jar` / native binary). Primary interface documented in the original README.
-2. **Web UI** — Spring Boot + Thymeleaf SSR app on port `8080`.
+1. **CLI** — PicoCLI interactive shell (`./gradlew shadowJar` → `afcas.jar`, or `:app:run`).
+2. **Web UI** — Spring Boot + Thymeleaf (`./gradlew bootRun`, or `bootJar` → `afcas-web-*.jar` on port `8080`).
 3. **SQL** — Call stored procedures directly against PostgreSQL when needed.
 
 ## High-level flow

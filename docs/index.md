@@ -20,7 +20,7 @@ features:
   - title: Hierarchical Authorization
     details: Principals (users/groups), operations, and resources form graphs. Permissions inherit through transitive closure for O(1) auth checks.
   - title: Dual Interfaces
-    details: Interactive PicoCLI shell for scripting and automation, plus a Spring Boot + Thymeleaf web UI for day-to-day management.
+    details: Interactive PicoCLI shell for scripting and automation, plus a Spring Boot + Thymeleaf web UI (`bootRun` / `bootJar`).
   - title: SQL or Java Engine
     details: Run authorization logic in PostgreSQL stored procedures (classic) or in the portable Java application layer via afcas.engine.mode.
   - title: PostgreSQL-Native

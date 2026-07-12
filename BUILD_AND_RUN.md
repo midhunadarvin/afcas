@@ -94,21 +94,21 @@ cd /testbed/afcas
 
 | Artifact Type | Command | Output Location |
 |---------------|---------|-----------------|
-| **Shadow JAR** (CLI + Web) | `./gradlew shadowJar` | `app/build/libs/afcas.jar` |
-| **Spring Boot JAR** (Web) | `./gradlew bootJar` | `app/build/libs/app-1.0-SNAPSHOT.jar` |
-| **Plain JAR** | `./gradlew jar` | `app/build/libs/app-1.0-SNAPSHOT.jar` |
-| **Native Image** (GraalVM) | `./gradlew nativeCompile` | `app/build/native/nativeCompile/afcas` |
+| **Shadow JAR** (CLI) | `./gradlew shadowJar` | `app/build/libs/afcas.jar` |
+| **Spring Boot JAR** (Web) | `./gradlew bootJar` | `app/build/libs/afcas-web-1.0-SNAPSHOT.jar` |
+| **Plain JAR** | `./gradlew :app:jar` | `app/build/libs/*-plain.jar` |
+| **Native Image** (CLI, GraalVM) | `./gradlew nativeCompile` | `app/build/native/nativeCompile/afcas` |
 
 ### Examples
 
 ```bash
-# Build the fat JAR with all dependencies (recommended for CLI)
+# CLI fat JAR
 ./gradlew shadowJar
 
-# Build the Spring Boot executable JAR (recommended for web app)
+# Web executable JAR
 ./gradlew bootJar
 
-# Build native executable (requires GraalVM)
+# Native CLI (requires GraalVM)
 ./gradlew nativeCompile
 ```
 
@@ -124,8 +124,8 @@ The CLI is built on **PicoCLI** with **JLine2** for interactive shell support.
 # Using shadow JAR (recommended)
 java -jar app/build/libs/afcas.jar
 
-# Or using Spring Boot JAR
-java -jar app/build/libs/app-1.0-SNAPSHOT.jar
+# Or via Gradle (application plugin)
+./gradlew :app:run --args='-h localhost -p 5432 -U postgres'
 ```
 
 ### Command-Line Options
@@ -183,57 +183,35 @@ afcas> is-authorized Admin Read Workspace
 
 ## Running the Spring Web Application
 
-The web application is built on **Spring Boot** with **Thymeleaf** for server-side rendering.
-
-### Run from Built JAR
-
 ```bash
-java -jar app/build/libs/app-1.0-SNAPSHOT.jar
-# or
-java -jar app/build/libs/afcas.jar
+# Development
+./gradlew bootRun
+# Open http://localhost:8080
+
+# Packaged
+./gradlew bootJar
+java -jar app/build/libs/afcas-web-1.0-SNAPSHOT.jar
 ```
 
-### Access the Web UI
-
-Open your browser to: **http://localhost:8080**
-
-### Database Configuration
-
-Defaults are in `app/src/main/resources/application.properties`:
+Configuration defaults (`app/src/main/resources/application.properties`):
 
 ```properties
+server.port=8080
 afcas.database.host=localhost
 afcas.database.port=5432
 afcas.database.username=postgres
 afcas.database.password=123456
 afcas.database.init.enabled=true
+afcas.engine.mode=sql
 ```
 
-### Override Configuration
-
-Via command-line arguments:
+Overrides:
 
 ```bash
-java -jar app.jar --afcas.database.host=192.168.1.100 --afcas.database.password=mypass
+./gradlew bootRun --args='--afcas.database.password=mypass --afcas.engine.mode=java'
+# or
+java -jar app/build/libs/afcas-web-1.0-SNAPSHOT.jar --afcas.database.password=mypass
 ```
-
-Via environment variables:
-
-```bash
-export AFCAS_DATABASE_HOST=192.168.1.100
-export AFCAS_DATABASE_PASSWORD=mypass
-java -jar app.jar
-```
-
-### Run with Spring Boot DevTools (Development)
-
-```bash
-./gradlew bootRun
-```
-
-This enables:
-- Hot-reload of code and templates
-- Faster development cycle
 
 ---
 
@@ -259,14 +237,15 @@ docker run -it afcas-native
 ### Build and Run in Docker (JVM)
 
 ```bash
-# Build the JAR
-./gradlew bootJar
+# Build the CLI fat JAR
+./gradlew shadowJar
 
-# Run with Docker (example)
+# Run with Docker (example — adjust image/entrypoint as needed)
 docker run -it --rm \
   -e AFCAS_DATABASE_HOST=host.docker.internal \
-  -p 8080:8080 \
-  afcas-app
+  -v "$PWD/app/build/libs:/app" \
+  eclipse-temurin:17-jre \
+  java -jar /app/afcas.jar
 ```
 
 ---
@@ -308,10 +287,11 @@ afcas/
 | `./gradlew build` | Full build (compile, test, package) |
 | `./gradlew compileJava` | Compile Java sources |
 | `./gradlew test` | Run unit tests |
-| `./gradlew bootRun` | Run Spring Boot app (dev mode) |
-| `./gradlew bootJar` | Build Spring Boot executable JAR |
-| `./gradlew shadowJar` | Build fat JAR with all dependencies |
-| `./gradlew nativeCompile` | Build GraalVM native image |
+| `./gradlew bootRun` | Run Spring Boot web UI |
+| `./gradlew bootJar` | Build web executable JAR |
+| `./gradlew :app:run` | Run CLI main class |
+| `./gradlew shadowJar` | Build fat CLI JAR |
+| `./gradlew nativeCompile` | Build GraalVM native CLI image |
 | `./gradlew clean` | Clean build artifacts |
 
 ### Running Tests

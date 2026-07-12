@@ -54,10 +54,10 @@
 
 ## Entry points
 
-| Entry | Class |
-|-------|-------|
-| CLI main | `com.afcas.AfcasApp` |
-| Web main | `com.afcas.web.AfcasWebApplication` |
+| Entry | Class | Gradle / artifact |
+|-------|-------|-------------------|
+| CLI | `com.afcas.AfcasApp` | `shadowJar` → `afcas.jar`, `:app:run` |
+| Web UI | `com.afcas.web.AfcasWebApplication` | `bootRun`, `bootJar` → `afcas-web-*.jar` |
 
 ## Data flow (CLI add principal)
 

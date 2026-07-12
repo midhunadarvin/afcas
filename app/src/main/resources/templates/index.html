@@ -1,74 +1,73 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head th:replace="~{layout :: head('Dashboard')}"></head>
-<body>
-<nav th:replace="~{layout :: navbar}"></nav>
+<body class="app-body">
+<div class="app-shell">
+    <aside th:replace="~{layout :: sidebar}"></aside>
+    <div class="app-main">
+        <header th:replace="~{layout :: topbar('Dashboard', 'Manage identities, actions, resources, and access decisions')}"></header>
+        <main class="app-content">
+            <div class="container-fluid app-container">
+                <section class="hero-panel">
+                    <h1><i class="bi bi-shield-lock-fill me-2"></i>Authorization control plane</h1>
+                    <p>
+                        Define who can do what, on which resources — with hierarchical principals,
+                        operations, and resource graphs.
+                    </p>
+                    <div class="hero-badges">
+                        <span class="hero-badge"><i class="bi bi-people"></i> Principals &amp; groups</span>
+                        <span class="hero-badge"><i class="bi bi-diagram-3"></i> Transitive hierarchy</span>
+                        <span class="hero-badge"><i class="bi bi-shield-check"></i> Live auth checks</span>
+                    </div>
+                </section>
 
-<div class="container mt-4">
-    <h1 class="mb-4"><i class="bi bi-shield-lock"></i> AFCAS Dashboard</h1>
-    
-    <div class="alert alert-info" role="alert">
-        <i class="bi bi-info-circle"></i> Welcome to the AFCAS Web Interface. Use the navigation menu to manage authorization entities.
-    </div>
-
-    <div class="row">
-        <div class="col-md-4 mb-4">
-            <div class="card h-100">
-                <div class="card-body text-center">
-                    <i class="bi bi-people display-1 text-primary"></i>
-                    <h5 class="card-title mt-3">Principals</h5>
-                    <p class="card-text">Manage users and groups in the authorization system.</p>
-                    <a href="/principals" class="btn btn-primary">Manage Principals</a>
+                <div class="row g-3 g-lg-4">
+                    <div class="col-md-6 col-xl-4">
+                        <a href="/principals" class="feature-card">
+                            <div class="feature-icon indigo"><i class="bi bi-people"></i></div>
+                            <h3>Principals</h3>
+                            <p>Users and groups that receive permissions, with nested membership.</p>
+                            <span class="feature-cta">Manage principals <i class="bi bi-arrow-right"></i></span>
+                        </a>
+                    </div>
+                    <div class="col-md-6 col-xl-4">
+                        <a href="/operations" class="feature-card">
+                            <div class="feature-icon emerald"><i class="bi bi-lightning-charge"></i></div>
+                            <h3>Operations</h3>
+                            <p>Actions principals can perform — Read, Edit, Delete, and custom ops.</p>
+                            <span class="feature-cta">Manage operations <i class="bi bi-arrow-right"></i></span>
+                        </a>
+                    </div>
+                    <div class="col-md-6 col-xl-4">
+                        <a href="/resources" class="feature-card">
+                            <div class="feature-icon amber"><i class="bi bi-box"></i></div>
+                            <h3>Resources</h3>
+                            <p>Protected objects and scopes in your system hierarchy.</p>
+                            <span class="feature-cta">Manage resources <i class="bi bi-arrow-right"></i></span>
+                        </a>
+                    </div>
+                    <div class="col-md-6 col-xl-6">
+                        <a href="/permissions" class="feature-card">
+                            <div class="feature-icon rose"><i class="bi bi-key"></i></div>
+                            <h3>Permissions</h3>
+                            <p>Grant access predicates that bind a principal, operation, and resource.</p>
+                            <span class="feature-cta">Configure permissions <i class="bi bi-arrow-right"></i></span>
+                        </a>
+                    </div>
+                    <div class="col-md-6 col-xl-6">
+                        <a href="/authorization" class="feature-card">
+                            <div class="feature-icon sky"><i class="bi bi-shield-check"></i></div>
+                            <h3>Authorization</h3>
+                            <p>Check decisions, digests, authorized operations, and resource access.</p>
+                            <span class="feature-cta">Run checks <i class="bi bi-arrow-right"></i></span>
+                        </a>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="col-md-4 mb-4">
-            <div class="card h-100">
-                <div class="card-body text-center">
-                    <i class="bi bi-gear display-1 text-success"></i>
-                    <h5 class="card-title mt-3">Operations</h5>
-                    <p class="card-text">Define operations that can be performed on resources.</p>
-                    <a href="/operations" class="btn btn-success">Manage Operations</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4 mb-4">
-            <div class="card h-100">
-                <div class="card-body text-center">
-                    <i class="bi bi-folder display-1 text-warning"></i>
-                    <h5 class="card-title mt-3">Resources</h5>
-                    <p class="card-text">Manage resources that principals can access.</p>
-                    <a href="/resources" class="btn btn-warning">Manage Resources</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-6 mb-4">
-            <div class="card h-100">
-                <div class="card-body text-center">
-                    <i class="bi bi-key display-1 text-danger"></i>
-                    <h5 class="card-title mt-3">Permissions</h5>
-                    <p class="card-text">Configure access predicates (Grant/Deny) for principals on operations and resources.</p>
-                    <a href="/permissions" class="btn btn-danger">Manage Permissions</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6 mb-4">
-            <div class="card h-100">
-                <div class="card-body text-center">
-                    <i class="bi bi-check-circle display-1 text-info"></i>
-                    <h5 class="card-title mt-3">Authorization</h5>
-                    <p class="card-text">Check authorization status and view authorization digests.</p>
-                    <a href="/authorization" class="btn btn-info">Check Authorization</a>
-                </div>
-            </div>
-        </div>
+        </main>
+        <footer th:replace="~{layout :: footer}"></footer>
     </div>
 </div>
-
-<footer th:replace="~{layout :: footer}"></footer>
 <th:block th:replace="~{layout :: scripts}"></th:block>
 </body>
 </html>

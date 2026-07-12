@@ -1,198 +1,190 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head th:replace="~{layout :: head('Authorization')}"></head>
-<body>
-<nav th:replace="~{layout :: navbar}"></nav>
-
-<div class="container mt-4">
-    <h1 class="mb-4"><i class="bi bi-check-circle"></i> Authorization</h1>
-
-    <div th:if="${error}" class="alert alert-danger" role="alert">
-        <span th:text="${error}"></span>
-    </div>
-
-    <div th:if="${success}" class="alert alert-success" role="alert">
-        <span th:text="${success}"></span>
-    </div>
-
-    <!-- Check Authorization Section -->
-    <div class="card mb-4">
-        <div class="card-header">
-            <h5 class="mb-0"><i class="bi bi-question-circle"></i> Check Authorization</h5>
-        </div>
-        <div class="card-body">
-            <form th:action="@{/authorization/check}" method="post">
-                <div class="row">
-                    <div class="col-md-4 mb-3">
-                        <label for="checkPrincipalId" class="form-label">Principal</label>
-                        <select class="form-select" id="checkPrincipalId" name="principalId" required>
-                            <option value="">-- Select --</option>
-                            <option th:each="principal : ${principals}" 
-                                    th:value="${principal.id}" 
-                                    th:text="${principal.name}">
-                                Principal
-                            </option>
-                        </select>
-                    </div>
-                    <div class="col-md-4 mb-3">
-                        <label for="checkOperationId" class="form-label">Operation</label>
-                        <select class="form-select" id="checkOperationId" name="operationId" required>
-                            <option value="">-- Select --</option>
-                            <option th:each="operation : ${operations}" 
-                                    th:value="${operation.id}" 
-                                    th:text="${operation.name != null ? operation.name : operation.id}">
-                                Operation
-                            </option>
-                        </select>
-                    </div>
-                    <div class="col-md-4 mb-3">
-                        <label for="checkResourceId" class="form-label">Resource</label>
-                        <input type="text" class="form-control" id="checkResourceId" name="resourceId" 
-                               placeholder="Resource name" required>
+<body class="app-body">
+<div class="app-shell">
+    <aside th:replace="~{layout :: sidebar}"></aside>
+    <div class="app-main">
+        <header th:replace="~{layout :: topbar('Authorization', 'Evaluate decisions and inspect effective access')}"></header>
+        <main class="app-content">
+            <div class="container-fluid app-container">
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title"><i class="bi bi-shield-check"></i> Authorization</h1>
+                        <p class="page-subtitle">Check whether a principal may perform an operation on a resource, and explore related queries.</p>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary">
-                    <i class="bi bi-search"></i> Check Authorization
-                </button>
-            </form>
 
-            <div th:if="${isAuthorized != null}" class="mt-4">
-                <div th:if="${isAuthorized}" class="alert alert-success">
-                    <i class="bi bi-check-circle-fill"></i> 
-                    <strong th:text="${principalId}"></strong> IS authorized to 
-                    <strong th:text="${operationId}"></strong> on 
-                    <strong th:text="${resourceId}"></strong>
+                <div th:if="${error}" class="alert alert-danger section-gap" role="alert">
+                    <i class="bi bi-exclamation-triangle-fill"></i><span th:text="${error}"></span>
                 </div>
-                <div th:if="${!isAuthorized}" class="alert alert-danger">
-                    <i class="bi bi-x-circle-fill"></i> 
-                    <strong th:text="${principalId}"></strong> is NOT authorized to 
-                    <strong th:text="${operationId}"></strong> on 
-                    <strong th:text="${resourceId}"></strong>
+                <div th:if="${success}" class="alert alert-success section-gap" role="alert">
+                    <i class="bi bi-check-circle-fill"></i><span th:text="${success}"></span>
                 </div>
-            </div>
-        </div>
-    </div>
 
-    <!-- Quick Actions -->
-    <div class="row">
-        <div class="col-md-4 mb-4">
-            <div class="card h-100">
-                <div class="card-body text-center">
-                    <i class="bi bi-list-ul display-4 text-primary"></i>
-                    <h5 class="card-title mt-3">Authorization Digest</h5>
-                    <p class="card-text">View all permissions for a principal.</p>
-                    <form th:action="@{/authorization/digest/{id}(id='')}" method="get" id="digestForm">
-                        <div class="input-group">
-                            <select class="form-select" onchange="if(this.value) window.location.href='/authorization/digest/'+this.value;">
-                                <option value="">Select Principal</option>
-                                <option th:each="principal : ${principals}" 
-                                        th:value="${principal.id}" 
-                                        th:text="${principal.name}">
-                                    Principal
-                                </option>
-                            </select>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4 mb-4">
-            <div class="card h-100">
-                <div class="card-body text-center">
-                    <i class="bi bi-gear display-4 text-success"></i>
-                    <h5 class="card-title mt-3">Authorized Operations</h5>
-                    <p class="card-text">List operations a principal can perform on a resource.</p>
-                    <a href="#authorizedOperations" class="btn btn-success" data-bs-toggle="collapse">Expand</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4 mb-4">
-            <div class="card h-100">
-                <div class="card-body text-center">
-                    <i class="bi bi-folder display-4 text-warning"></i>
-                    <h5 class="card-title mt-3">Authorized Resources</h5>
-                    <p class="card-text">List resources a principal can access with an operation.</p>
-                    <a href="#authorizedResources" class="btn btn-warning" data-bs-toggle="collapse">Expand</a>
-                </div>
-            </div>
-        </div>
-    </div>
+                <div class="card card-elevated section-gap">
+                    <div class="card-header">
+                        <h5><i class="bi bi-search"></i> Check authorization</h5>
+                    </div>
+                    <div class="card-body">
+                        <form th:action="@{/authorization/check}" method="post">
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                    <label for="checkPrincipalId" class="form-label">Principal</label>
+                                    <select class="form-select" id="checkPrincipalId" name="principalId" required>
+                                        <option value="">Select…</option>
+                                        <option th:each="principal : ${principals}"
+                                                th:value="${principal.id}"
+                                                th:text="${principal.name}">Principal</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="checkOperationId" class="form-label">Operation</label>
+                                    <select class="form-select" id="checkOperationId" name="operationId" required>
+                                        <option value="">Select…</option>
+                                        <option th:each="operation : ${operations}"
+                                                th:value="${operation.id}"
+                                                th:text="${operation.name != null ? operation.name : operation.id}">Operation</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="checkResourceId" class="form-label">Resource</label>
+                                    <input type="text" class="form-control table-mono" id="checkResourceId" name="resourceId"
+                                           placeholder="Resource id" required>
+                                </div>
+                            </div>
+                            <div class="mt-3">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="bi bi-shield-check"></i> Check
+                                </button>
+                            </div>
+                        </form>
 
-    <!-- Authorized Operations Form -->
-    <div class="collapse mb-4" id="authorizedOperations">
-        <div class="card">
-            <div class="card-header">
-                <h5 class="mb-0">Get Authorized Operations</h5>
-            </div>
-            <div class="card-body">
-                <form th:action="@{/authorization/authorized-operations}" method="post">
-                    <div class="row">
-                        <div class="col-md-5 mb-3">
-                            <label class="form-label">Principal</label>
-                            <select class="form-select" name="principalId" required>
-                                <option value="">-- Select --</option>
-                                <option th:each="principal : ${principals}" 
-                                        th:value="${principal.id}" 
-                                        th:text="${principal.name}">
-                                    Principal
-                                </option>
-                            </select>
-                        </div>
-                        <div class="col-md-5 mb-3">
-                            <label class="form-label">Resource</label>
-                            <input type="text" class="form-control" name="resourceId" required placeholder="Resource name">
-                        </div>
-                        <div class="col-md-2 mb-3 d-flex align-items-end">
-                            <button type="submit" class="btn btn-success w-100">Get</button>
+                        <div th:if="${isAuthorized != null}" class="mt-4">
+                            <div th:if="${isAuthorized}" class="result-pill allow">
+                                <i class="bi bi-check-circle-fill"></i>
+                                <div>
+                                    <strong th:text="${principalId}"></strong> is authorized to
+                                    <strong th:text="${operationId}"></strong> on
+                                    <strong th:text="${resourceId}"></strong>
+                                </div>
+                            </div>
+                            <div th:if="${!isAuthorized}" class="result-pill deny">
+                                <i class="bi bi-x-circle-fill"></i>
+                                <div>
+                                    <strong th:text="${principalId}"></strong> is <em>not</em> authorized to
+                                    <strong th:text="${operationId}"></strong> on
+                                    <strong th:text="${resourceId}"></strong>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </form>
-            </div>
-        </div>
-    </div>
+                </div>
 
-    <!-- Authorized Resources Form -->
-    <div class="collapse mb-4" id="authorizedResources">
-        <div class="card">
-            <div class="card-header">
-                <h5 class="mb-0">Get Authorized Resources</h5>
-            </div>
-            <div class="card-body">
-                <form th:action="@{/authorization/authorized-resources}" method="post">
-                    <div class="row">
-                        <div class="col-md-5 mb-3">
-                            <label class="form-label">Principal</label>
-                            <select class="form-select" name="principalId" required>
-                                <option value="">-- Select --</option>
-                                <option th:each="principal : ${principals}" 
-                                        th:value="${principal.id}" 
-                                        th:text="${principal.name}">
-                                    Principal
-                                </option>
-                            </select>
-                        </div>
-                        <div class="col-md-5 mb-3">
-                            <label class="form-label">Operation</label>
-                            <select class="form-select" name="operationId" required>
-                                <option value="">-- Select --</option>
-                                <option th:each="operation : ${operations}" 
-                                        th:value="${operation.id}" 
-                                        th:text="${operation.name != null ? operation.name : operation.id}">
-                                    Operation
-                                </option>
-                            </select>
-                        </div>
-                        <div class="col-md-2 mb-3 d-flex align-items-end">
-                            <button type="submit" class="btn btn-warning w-100">Get</button>
+                <div class="row g-3 g-lg-4 section-gap">
+                    <div class="col-md-4">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <div class="feature-icon indigo mb-3"><i class="bi bi-list-ul"></i></div>
+                                <h3 class="h6 fw-bold">Authorization digest</h3>
+                                <p class="text-muted small">View effective grants for a principal.</p>
+                                <select class="form-select"
+                                        onchange="if(this.value) window.location.href='/authorization/digest/'+this.value;">
+                                    <option value="">Select principal…</option>
+                                    <option th:each="principal : ${principals}"
+                                            th:value="${principal.id}"
+                                            th:text="${principal.name}">Principal</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
-                </form>
+                    <div class="col-md-4">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <div class="feature-icon emerald mb-3"><i class="bi bi-lightning-charge"></i></div>
+                                <h3 class="h6 fw-bold">Authorized operations</h3>
+                                <p class="text-muted small">Ops a principal can run on a resource.</p>
+                                <button class="btn btn-secondary btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#authorizedOperations">
+                                    Open form
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <div class="feature-icon amber mb-3"><i class="bi bi-box"></i></div>
+                                <h3 class="h6 fw-bold">Authorized resources</h3>
+                                <p class="text-muted small">Resources reachable for a given operation.</p>
+                                <button class="btn btn-secondary btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#authorizedResources">
+                                    Open form
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="collapse section-gap" id="authorizedOperations">
+                    <div class="card">
+                        <div class="card-header"><h5>Get authorized operations</h5></div>
+                        <div class="card-body">
+                            <form th:action="@{/authorization/authorized-operations}" method="post">
+                                <div class="row g-3">
+                                    <div class="col-md-5">
+                                        <label class="form-label">Principal</label>
+                                        <select class="form-select" name="principalId" required>
+                                            <option value="">Select…</option>
+                                            <option th:each="principal : ${principals}" th:value="${principal.id}" th:text="${principal.name}">P</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <label class="form-label">Resource</label>
+                                        <input type="text" class="form-control table-mono" name="resourceId" required placeholder="Resource id">
+                                    </div>
+                                    <div class="col-md-2 d-flex align-items-end">
+                                        <button type="submit" class="btn btn-primary w-100">Get</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="collapse" id="authorizedResources">
+                    <div class="card">
+                        <div class="card-header"><h5>Get authorized resources</h5></div>
+                        <div class="card-body">
+                            <form th:action="@{/authorization/authorized-resources}" method="post">
+                                <div class="row g-3">
+                                    <div class="col-md-5">
+                                        <label class="form-label">Principal</label>
+                                        <select class="form-select" name="principalId" required>
+                                            <option value="">Select…</option>
+                                            <option th:each="principal : ${principals}" th:value="${principal.id}" th:text="${principal.name}">P</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <label class="form-label">Operation</label>
+                                        <select class="form-select" name="operationId" required>
+                                            <option value="">Select…</option>
+                                            <option th:each="operation : ${operations}"
+                                                    th:value="${operation.id}"
+                                                    th:text="${operation.name != null ? operation.name : operation.id}">O</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-2 d-flex align-items-end">
+                                        <button type="submit" class="btn btn-primary w-100">Get</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
+        </main>
+        <footer th:replace="~{layout :: footer}"></footer>
     </div>
 </div>
-
-<footer th:replace="~{layout :: footer}"></footer>
 <th:block th:replace="~{layout :: scripts}"></th:block>
 </body>
 </html>

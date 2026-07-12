@@ -1,98 +1,101 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head th:replace="~{layout :: head('Group Members')}"></head>
-<body>
-<nav th:replace="~{layout :: navbar}"></nav>
-
-<div class="container mt-4">
-    <div class="mb-4">
-        <a href="/principals" class="btn btn-secondary">
-            <i class="bi bi-arrow-left"></i> Back to Principals
-        </a>
-    </div>
-
-    <h1 class="mb-4">
-        <i class="bi bi-people"></i> Members of <span th:text="${group.name}">Group Name</span>
-    </h1>
-
-    <div th:if="${error}" class="alert alert-danger" role="alert">
-        <span th:text="${error}"></span>
-    </div>
-
-    <div th:if="${success}" class="alert alert-success" role="alert">
-        <span th:text="${success}"></span>
-    </div>
-
-    <div class="row">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="mb-0">Current Members</h5>
+<body class="app-body">
+<div class="app-shell">
+    <aside th:replace="~{layout :: sidebar}"></aside>
+    <div class="app-main">
+        <header th:replace="~{layout :: topbar('Group members', 'Manage membership for hierarchical inheritance')}"></header>
+        <main class="app-content">
+            <div class="container-fluid app-container">
+                <div class="page-header">
+                    <div>
+                        <a href="/principals" class="btn btn-secondary btn-sm mb-2"><i class="bi bi-arrow-left"></i> Back</a>
+                        <h1 class="page-title">
+                            <i class="bi bi-people"></i>
+                            Members of <span th:text="${group.name}">Group</span>
+                        </h1>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <table class="table table-sm">
-                        <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Type</th>
-                            <th>Actions</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr th:each="member : ${members}">
-                            <td th:text="${member.name}">Member</td>
-                            <td>
-                                <span th:if="${member.principalType.name() == 'User'}" class="badge bg-primary">User</span>
-                                <span th:if="${member.principalType.name() == 'Group'}" class="badge bg-secondary">Group</span>
-                            </td>
-                            <td>
-                                <form th:action="@{/principals/{groupId}/members/{memberId}/remove(groupId=${group.id}, memberId=${member.id})}" 
-                                      method="post" style="display:inline;"
-                                      onsubmit="return confirm('Remove this member?');">
-                                    <button type="submit" class="btn btn-sm btn-outline-danger">
-                                        <i class="bi bi-person-dash"></i> Remove
+
+                <div th:if="${error}" class="alert alert-danger section-gap" role="alert">
+                    <i class="bi bi-exclamation-triangle-fill"></i><span th:text="${error}"></span>
+                </div>
+                <div th:if="${success}" class="alert alert-success section-gap" role="alert">
+                    <i class="bi bi-check-circle-fill"></i><span th:text="${success}"></span>
+                </div>
+
+                <div class="row g-3 g-lg-4">
+                    <div class="col-lg-7">
+                        <div class="card h-100">
+                            <div class="card-header"><h5><i class="bi bi-list-ul"></i> Current members</h5></div>
+                            <div class="card-body p-0">
+                                <div class="table-shell" style="border:0;border-radius:0;box-shadow:none;" th:if="${members != null and !#lists.isEmpty(members)}">
+                                    <table class="table table-hover mb-0">
+                                        <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Type</th>
+                                            <th class="text-end">Actions</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:each="member : ${members}">
+                                            <td class="fw-semibold" th:text="${member.name}">Member</td>
+                                            <td>
+                                                <span th:if="${member.principalType.name() == 'User'}" class="badge bg-primary">User</span>
+                                                <span th:if="${member.principalType.name() == 'Group'}" class="badge bg-secondary">Group</span>
+                                            </td>
+                                            <td class="text-end">
+                                                <form th:action="@{/principals/{groupId}/members/{memberId}/remove(groupId=${group.id}, memberId=${member.id})}"
+                                                      method="post" class="inline-form"
+                                                      onsubmit="return confirm('Remove this member?');">
+                                                    <button type="submit" class="btn btn-sm btn-outline-danger">
+                                                        <i class="bi bi-person-dash"></i> Remove
+                                                    </button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="empty-state py-5" th:if="${members == null or #lists.isEmpty(members)}">
+                                    <div class="empty-state-icon"><i class="bi bi-person-dash"></i></div>
+                                    <h3>No members</h3>
+                                    <p>Add a principal from the panel on the right.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-5">
+                        <div class="card h-100">
+                            <div class="card-header"><h5><i class="bi bi-person-plus"></i> Add member</h5></div>
+                            <div class="card-body">
+                                <form th:action="@{/principals/{groupId}/members(groupId=${group.id})}" method="post">
+                                    <div class="mb-3">
+                                        <label for="memberId" class="form-label">Principal</label>
+                                        <select class="form-select" id="memberId" name="memberId" required>
+                                            <option value="">Select principal…</option>
+                                            <option th:each="principal : ${allPrincipals}"
+                                                    th:value="${principal.id}"
+                                                    th:text="${principal.name + ' (' + principal.principalType + ')'}">
+                                                Principal
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary w-100">
+                                        <i class="bi bi-person-plus"></i> Add to group
                                     </button>
                                 </form>
-                            </td>
-                        </tr>
-                        <tr th:if="${#lists.isEmpty(members)}">
-                            <td colspan="3" class="text-center text-muted">No members</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="mb-0">Add Member</h5>
-                </div>
-                <div class="card-body">
-                    <form th:action="@{/principals/{groupId}/members(groupId=${group.id})}" method="post">
-                        <div class="mb-3">
-                            <label for="memberId" class="form-label">Select Principal</label>
-                            <select class="form-select" id="memberId" name="memberId" required>
-                                <option value="">-- Select --</option>
-                                <option th:each="principal : ${allPrincipals}" 
-                                        th:value="${principal.id}" 
-                                        th:text="${principal.name + ' (' + principal.principalType + ')'}">
-                                    Principal
-                                </option>
-                            </select>
+                            </div>
                         </div>
-                        <button type="submit" class="btn btn-primary">
-                            <i class="bi bi-person-plus"></i> Add Member
-                        </button>
-                    </form>
+                    </div>
                 </div>
             </div>
-        </div>
+        </main>
+        <footer th:replace="~{layout :: footer}"></footer>
     </div>
 </div>
-
-<footer th:replace="~{layout :: footer}"></footer>
 <th:block th:replace="~{layout :: scripts}"></th:block>
 </body>
 </html>

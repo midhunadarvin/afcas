@@ -1,60 +1,66 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head th:replace="~{layout :: head('Authorization Digest')}"></head>
-<body>
-<nav th:replace="~{layout :: navbar}"></nav>
+<body class="app-body">
+<div class="app-shell">
+    <aside th:replace="~{layout :: sidebar}"></aside>
+    <div class="app-main">
+        <header th:replace="~{layout :: topbar('Authorization digest', 'Effective permission set for a principal')}"></header>
+        <main class="app-content">
+            <div class="container-fluid app-container">
+                <div class="page-header">
+                    <div>
+                        <a href="/authorization" class="btn btn-secondary btn-sm mb-2"><i class="bi bi-arrow-left"></i> Back</a>
+                        <h1 class="page-title">
+                            <i class="bi bi-list-ul"></i>
+                            Digest for <span th:text="${principalId}">Principal</span>
+                        </h1>
+                    </div>
+                </div>
 
-<div class="container mt-4">
-    <div class="mb-4">
-        <a href="/authorization" class="btn btn-secondary">
-            <i class="bi bi-arrow-left"></i> Back to Authorization
-        </a>
-    </div>
+                <div th:if="${error}" class="alert alert-danger section-gap" role="alert">
+                    <i class="bi bi-exclamation-triangle-fill"></i><span th:text="${error}"></span>
+                </div>
 
-    <h1 class="mb-4">
-        <i class="bi bi-list-ul"></i> Authorization Digest for <span th:text="${principalId}">Principal</span>
-    </h1>
+                <div class="table-shell" th:if="${digest != null and !#lists.isEmpty(digest)}">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>Operation</th>
+                            <th>Resource</th>
+                            <th>Access type</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="predicate : ${digest}">
+                            <td class="table-mono fw-semibold" th:text="${predicate.operationId}">Op</td>
+                            <td class="table-mono" th:text="${predicate.resourceId}">Res</td>
+                            <td>
+                                <span th:if="${predicate.accessPredicateType.name() == 'Grant'}" class="badge bg-success">
+                                    <i class="bi bi-check"></i> Grant
+                                </span>
+                                <span th:if="${predicate.accessPredicateType.name() == 'Deny'}" class="badge bg-danger">
+                                    <i class="bi bi-x"></i> Deny
+                                </span>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
 
-    <div th:if="${error}" class="alert alert-danger" role="alert">
-        <span th:text="${error}"></span>
-    </div>
-
-    <div class="card">
-        <div class="card-header">
-            <h5 class="mb-0">All Permissions</h5>
-        </div>
-        <div class="card-body">
-            <table class="table table-striped" th:if="${!#lists.isEmpty(digest)}">
-                <thead>
-                <tr>
-                    <th>Operation</th>
-                    <th>Resource</th>
-                    <th>Access Type</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="predicate : ${digest}">
-                    <td th:text="${predicate.operationId}">Operation</td>
-                    <td th:text="${predicate.resourceId}">Resource</td>
-                    <td>
-                        <span th:if="${predicate.accessPredicateType.name() == 'Grant'}" class="badge bg-success">
-                            <i class="bi bi-check"></i> Grant
-                        </span>
-                        <span th:if="${predicate.accessPredicateType.name() == 'Deny'}" class="badge bg-danger">
-                            <i class="bi bi-x"></i> Deny
-                        </span>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-            <div th:if="${#lists.isEmpty(digest)}" class="text-center text-muted py-4">
-                No permissions found for this principal.
+                <div class="card" th:if="${digest == null or #lists.isEmpty(digest)}">
+                    <div class="empty-state">
+                        <div class="empty-state-icon"><i class="bi bi-inbox"></i></div>
+                        <h3>No permissions found</h3>
+                        <p>This principal has no access predicates in the digest.</p>
+                        <a href="/permissions/new" class="btn btn-primary"><i class="bi bi-key"></i> Add permission</a>
+                    </div>
+                </div>
             </div>
-        </div>
+        </main>
+        <footer th:replace="~{layout :: footer}"></footer>
     </div>
 </div>
-
-<footer th:replace="~{layout :: footer}"></footer>
 <th:block th:replace="~{layout :: scripts}"></th:block>
 </body>
 </html>

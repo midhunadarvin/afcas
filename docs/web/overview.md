@@ -1,6 +1,6 @@
 # Web Application Overview
 
-The web UI is a **Spring Boot** application with **Thymeleaf** server-side rendering. It wraps the same authorization managers/services as the CLI for interactive administration.
+The web UI is a **Spring Boot** application with **Thymeleaf** server-side rendering. It wraps the same authorization managers for interactive administration.
 
 ## Features
 
@@ -12,21 +12,34 @@ The web UI is a **Spring Boot** application with **Thymeleaf** server-side rende
 
 ## Stack
 
-| Layer | Tech |
-|-------|------|
-| Framework | Spring Boot |
-| Templates | Thymeleaf (`templates/*.html`) |
-| CSS | Bootstrap 5 (templates) |
-| DB access | JDBC via `DatabaseHelper` + Spring `DataSource` |
+| Layer | Technology |
+|-------|------------|
+| Framework | Spring Boot 3.1 (Web, JDBC, Validation) |
+| Templates | Thymeleaf + Bootstrap 5 (CDN) |
+| Database | PostgreSQL via JDBC (`DatabaseHelper` + Spring `DataSource`) |
 | Config | `application.properties` |
+| Auth engines | SQL procedures or Java engine (`afcas.engine.mode`) |
 
-## Startup behavior
+## How to run
 
-1. `DatabaseConfig` initializes `DatabaseHelper` from `afcas.database.*`
-2. Exposes a `DataSource` bean for JDBC repositories and schema init
+```bash
+./gradlew bootRun
+# → http://localhost:8080
+```
+
+Details: [Running the Web UI](./running).
+
+## Startup sequence
+
+1. `AfcasWebApplication` starts Spring (component scan: `com.afcas`)
+2. `DatabaseConfig` initializes `DatabaseHelper` and exposes a `DataSource`
 3. `DatabaseSchemaInitializer` optionally applies `db/init/*.postgres.sql`
-4. `EngineConfiguration` selects SQL vs Java provider
+4. `EngineConfiguration` selects SQL vs Java `IAuthorizationProvider`
+5. Controllers serve Thymeleaf pages on port `8080`
 
-## Main class
+## Main classes
 
-`com.afcas.web.AfcasWebApplication`
+| Role | Class |
+|------|-------|
+| Web | `com.afcas.web.AfcasWebApplication` |
+| CLI | `com.afcas.AfcasApp` |

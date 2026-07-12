@@ -28,14 +28,18 @@ public class EngineConfiguration {
      * @param sqlProvider The original SQL-based provider
      * @return The appropriate provider based on configuration
      */
+    /**
+     * Primary provider selected by {@code afcas.engine.mode}.
+     * Bean name avoids clashing with the {@link AuthorizationProvider} @Service.
+     */
     @Bean
     @Primary
-    public IAuthorizationProvider authorizationProvider(
+    public IAuthorizationProvider configuredAuthorizationProvider(
             AuthorizationEngine javaEngine,
             AuthorizationProvider sqlProvider) {
-        
+
         EngineMode mode = EngineMode.valueOf(engineModeString.toUpperCase());
-        
+
         switch (mode) {
             case JAVA:
                 return javaEngine;

@@ -1,44 +1,51 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head th:replace="~{layout :: head('Authorized Operations')}"></head>
-<body>
-<nav th:replace="~{layout :: navbar}"></nav>
+<body class="app-body">
+<div class="app-shell">
+    <aside th:replace="~{layout :: sidebar}"></aside>
+    <div class="app-main">
+        <header th:replace="~{layout :: topbar('Authorized operations', 'Operations available for a principal on a resource')}"></header>
+        <main class="app-content">
+            <div class="container-fluid app-container">
+                <div class="page-header">
+                    <div>
+                        <a href="/authorization" class="btn btn-secondary btn-sm mb-2"><i class="bi bi-arrow-left"></i> Back</a>
+                        <h1 class="page-title"><i class="bi bi-lightning-charge"></i> Authorized operations</h1>
+                    </div>
+                </div>
 
-<div class="container mt-4">
-    <div class="mb-4">
-        <a href="/authorization" class="btn btn-secondary">
-            <i class="bi bi-arrow-left"></i> Back to Authorization
-        </a>
-    </div>
+                <div class="meta-chip-row">
+                    <span class="meta-chip">Principal <strong th:text="${principalId}">p</strong></span>
+                    <span class="meta-chip">Resource <strong th:text="${resourceId}">r</strong></span>
+                </div>
 
-    <h1 class="mb-4">
-        <i class="bi bi-gear"></i> Authorized Operations
-    </h1>
+                <div class="card" th:if="${operations != null and !#lists.isEmpty(operations)}">
+                    <div class="card-body">
+                        <ul class="soft-list">
+                            <li class="soft-list-item" th:each="operation : ${operations}">
+                                <i class="bi bi-lightning-charge"></i>
+                                <div>
+                                    <strong th:text="${operation.name != null ? operation.name : operation.id}">Op</strong>
+                                    <div class="text-muted small table-mono" th:if="${operation.id != null}" th:text="${operation.id}"></div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
 
-    <div class="alert alert-info">
-        Principal: <strong th:text="${principalId}">Principal</strong><br>
-        Resource: <strong th:text="${resourceId}">Resource</strong>
-    </div>
-
-    <div class="card">
-        <div class="card-header">
-            <h5 class="mb-0">Operations this principal can perform on the resource</h5>
-        </div>
-        <div class="card-body">
-            <ul class="list-group" th:if="${!#lists.isEmpty(operations)}">
-                <li class="list-group-item" th:each="operation : ${operations}">
-                    <i class="bi bi-gear text-success"></i> 
-                    <span th:text="${operation.name != null ? operation.name : operation.id}">Operation</span>
-                </li>
-            </ul>
-            <div th:if="${#lists.isEmpty(operations)}" class="text-center text-muted py-4">
-                No authorized operations found.
+                <div class="card" th:if="${operations == null or #lists.isEmpty(operations)}">
+                    <div class="empty-state">
+                        <div class="empty-state-icon"><i class="bi bi-slash-circle"></i></div>
+                        <h3>No authorized operations</h3>
+                        <p>This principal cannot perform any known operations on the resource.</p>
+                    </div>
+                </div>
             </div>
-        </div>
+        </main>
+        <footer th:replace="~{layout :: footer}"></footer>
     </div>
 </div>
-
-<footer th:replace="~{layout :: footer}"></footer>
 <th:block th:replace="~{layout :: scripts}"></th:block>
 </body>
 </html>
